@@ -1,0 +1,32 @@
+.headerBotones {
+  background-color: rgba(0, 123, 255, 0.8); /* Azul Bootstrap con opacidad */
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+  position: sticky;
+  top: 0;
+  z-index: 1050;
+}
+
+.btn-transparent {
+  background-color: transparent;
+  border: none;
+  transition: all 0.3s ease;
+}
+
+.btn-transparent:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+  border-radius: 5px;
+}
+
+form input {
+  background-color: rgba(255, 255, 255, 0.85);
+}
+
+form input:focus {
+  box-shadow: 0 0 5px #fff;
+}
+
+.btn-outline-light:hover {
+  background-color: #fff;
+  color: #0d6efd;
+}

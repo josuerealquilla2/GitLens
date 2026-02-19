@@ -1,0 +1,20 @@
+
+<div class="container py-4">
+  @for (repo of ListaRepos(); track repo.name) {
+    <div class="card my-3 p-3 shadow-sm">
+      <div class="d-flex align-items-center">
+        <img [src]="repo.avatar" alt="avatar" class="rounded-circle me-3" width="60">
+        <div>
+          <h5>{{ repo.name }}</h5>
+          <p class="mb-1">{{ repo.description }}</p>
+          <small>
+             {{ repo.creador }} |
+             {{ repo.lenguaje }} |
+             {{ repo.numerodeEstrellas }}
+          </small><br>
+          <a [href]="repo.urlRepos" target="_blank" class="text-primary">Ver en GitHub</a>
+        </div>
+      </div>
+    </div>
+  }
+</div>

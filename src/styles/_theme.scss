@@ -1,0 +1,105 @@
+@use '@angular/material' as mat;
+@use 'sass:color';
+@use './typography' as typo;
+@use './variables' as *;
+
+// ==========================
+// PALETAS
+// ==========================
+
+// Tema claro
+$light-primary-palette: (
+  50: color.adjust($primary, $lightness: 90%),
+  100: color.adjust($primary, $lightness: 80%),
+  200: color.adjust($primary, $lightness: 60%),
+  300: color.adjust($primary, $lightness: 40%),
+  400: color.adjust($primary, $lightness: 20%),
+  500: $primary,
+  600: color.adjust($primary, $lightness: -20%),
+  700: color.adjust($primary, $lightness: -40%),
+  800: color.adjust($primary, $lightness: -60%),
+  900: color.adjust($primary, $lightness: -80%),
+  contrast: (
+    50: $dark,
+    100: $dark,
+    200: $dark,
+    300: $dark,
+    400: $dark,
+    500: $light,
+    600: $light,
+    700: $light,
+    800: $light,
+    900: $light,
+  )
+);
+
+$light-accent-palette: (
+  50: color.adjust($secondary, $lightness: 90%),
+  100: color.adjust($secondary, $lightness: 80%),
+  200: color.adjust($secondary, $lightness: 60%),
+  300: color.adjust($secondary, $lightness: 40%),
+  400: color.adjust($secondary, $lightness: 20%),
+  500: $secondary,
+  600: color.adjust($secondary, $lightness: -20%),
+  700: color.adjust($secondary, $lightness: -40%),
+  800: color.adjust($secondary, $lightness: -60%),
+  900: color.adjust($secondary, $lightness: -80%),
+  contrast: (
+    50: $dark,
+    100: $dark,
+    200: $dark,
+    300: $dark,
+    400: $dark,
+    500: $dark,
+    600: $dark,
+    700: $light,
+    800: $light,
+    900: $light,
+  )
+);
+
+// Tema claro
+$light-primary: mat.m2-define-palette($light-primary-palette, 500);
+$light-accent: mat.m2-define-palette($light-accent-palette, 500);
+$light-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+// Tema oscuro
+$dark-primary: mat.m2-define-palette($light-primary-palette, 200);
+$dark-accent: mat.m2-define-palette($light-accent-palette, 200);
+$dark-warn: mat.m2-define-palette(mat.$m2-red-palette);
+
+// ==========================
+// DEFINICIÓN DE TEMAS
+// ==========================
+
+$light-theme: mat.m2-define-light-theme((
+  color: (
+    primary: $light-primary,
+    accent: $light-accent,
+    warn: $light-warn,
+  ),
+  typography: typo.$clinic-typography,
+  density: 0,
+));
+
+$dark-theme: mat.m2-define-dark-theme((
+  color: (
+    primary: $dark-primary,
+    accent: $dark-accent,
+    warn: $dark-warn,
+  ),
+  typography: typo.$clinic-typography,
+  density: 0,
+));
+
+// ==========================
+// MIXIN PARA APLICAR EL TEMA
+// ==========================
+
+@mixin apply-theme() {
+  @include mat.all-component-themes($light-theme);
+
+  html[data-theme='dark'] {
+    @include mat.all-component-colors($dark-theme);
+  }
+}

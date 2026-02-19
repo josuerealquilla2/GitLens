@@ -1,0 +1,84 @@
+$primary: #FF6F3C;
+$secondary: #FFA07A;
+$success:   #4CAF50;
+$danger:    #F44336;
+$warning:   #FF9800;
+$info:      #03A9F4;
+$light:     #f8f9fa;
+$dark:      #212121;
+
+$medical-teal: #009688;
+$soft-purple: #7E57C2;
+$warm-pink: #EC407A;
+
+$psychology-purple: #7B1FA2;
+$calm-green: #388E3C;
+$mindful-blue: #0288D1;
+
+$density: 0; /* DEJADLO COMO VALOR 0 */
+
+:root {
+  --color-primary:   #{$primary};
+  --color-secondary: #{$secondary};
+  --color-success:   #{$success};
+  --color-danger:    #{$danger};
+  --color-warning:   #{$warning};
+  --color-info:      #{$info};
+  --color-light:     #{$light};
+  --color-dark:      #{$dark};
+
+  --color-medical:   #{$medical-teal};
+  --color-wellness:  #{$soft-purple};
+  --color-aesthetic: #{$warm-pink};
+
+  --color-psychology: #{$psychology-purple};
+  --color-calm:       #{$calm-green};
+  --color-mindful:    #{$mindful-blue};
+
+  --surface: #ffffff;
+  --on-surface: #212121;
+  --background: #f8f9fa;
+  --on-background: #212121;
+
+  --bs-primary: #{$primary};
+  --bs-secondary: #{$secondary};
+  --bs-success: #{$success};
+  --bs-danger: #{$danger};
+  --bs-warning: #{$warning};
+  --bs-info: #{$info};
+  --bs-light: #{$light};
+  --bs-dark: #{$dark};
+}
+
+[data-theme='dark'] {
+  --color-primary:   #64B5F6;
+  --color-secondary: #90CAF9;
+  --color-success:   #81C784;
+  --color-danger:    #E57373;
+  --color-warning:   #FFB74D;
+  --color-info:      #4FC3F7;
+  --color-light:     #424242;
+  --color-dark:      #e0e0e0;
+
+  --color-medical:   #4DB6AC;
+  --color-wellness:  #9575CD;
+  --color-aesthetic: #F06292;
+
+  --color-psychology: #BA68C8;
+  --color-calm:       #66BB6A;
+  --color-mindful:    #29B6F6;
+
+  --surface: #121212;
+  --on-surface: #ffffff;
+  --background: #1e1e1e;
+  --on-background: #ffffff;
+
+  --bs-primary: #64B5F6;
+  --bs-secondary: #90CAF9;
+  --bs-success: #81C784;
+  --bs-danger: #E57373;
+  --bs-warning: #FFB74D;
+  --bs-info: #4FC3F7;
+  --bs-light: #424242;
+  --bs-dark: #e0e0e0;
+}

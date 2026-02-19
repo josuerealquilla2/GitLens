@@ -1,0 +1,65 @@
+@use 'sass:color';
+@use './variables' as *;
+@use "bootstrap/scss/bootstrap" as bs with (
+  $primary: $primary,
+  $secondary: $secondary,
+  $success: $success,
+  $danger: $danger,
+  $warning: $warning,
+  $info: $info,
+  $light: $light,
+  $dark: $dark,
+);
+
+:root {
+  --bs-primary-rgb: #{color.channel($primary, "red")}, #{color.channel($primary, "green")}, #{color.channel($primary, "blue")};
+  --bs-secondary-rgb: #{color.channel($secondary, "red")}, #{color.channel($secondary, "green")}, #{color.channel($secondary, "blue")};
+  --bs-success-rgb: #{color.channel($success, "red")}, #{color.channel($success, "green")}, #{color.channel($success, "blue")};
+  --bs-danger-rgb: #{color.channel($danger, "red")}, #{color.channel($danger, "green")}, #{color.channel($danger, "blue")};
+  --bs-warning-rgb: #{color.channel($warning, "red")}, #{color.channel($warning, "green")}, #{color.channel($warning, "blue")};
+  --bs-info-rgb: #{color.channel($info, "red")}, #{color.channel($info, "green")}, #{color.channel($info, "blue")};
+  --bs-light-rgb: #{color.channel($light, "red")}, #{color.channel($light, "green")}, #{color.channel($light, "blue")};
+  --bs-dark-rgb: #{color.channel($dark, "red")}, #{color.channel($dark, "green")}, #{color.channel($dark, "blue")};
+}
+
+:root {
+  --bs-primary: #{$primary};
+  --bs-secondary: #{$secondary};
+  --bs-success: #{$success};
+  --bs-danger: #{$danger};
+  --bs-warning: #{$warning};
+  --bs-info: #{$info};
+  --bs-light: #{$light};
+  --bs-dark: #{$dark};
+}
+
+body {
+  background-color: var(--background);
+  color: var(--on-background);
+}
+
+[data-theme='dark'] {
+  .card {
+    background-color: var(--surface);
+    color: var(--on-surface);
+    border-color: rgba(255, 255, 255, 0.125);
+  }
+
+  .btn-light {
+    background-color: var(--bs-light);
+    color: var(--bs-dark);
+    border-color: var(--bs-light);
+  }
+
+  .btn-dark {
+    background-color: var(--bs-dark);
+    color: var(--bs-light);
+    border-color: var(--bs-dark);
+  }
+
+  .table {
+    --bs-table-bg: var(--surface);
+    --bs-table-color: var(--on-surface);
+    --bs-table-border-color: rgba(255, 255, 255, 0.125);
+  }
+}

@@ -1,0 +1,63 @@
+<div class="modal-backdrop">
+  <div class="modal-container bg-white p-4 rounded shadow">
+    <h4 class="text-center mb-3 text-primary">Iniciar sesión</h4>
+
+    <form [formGroup]="formLogin" (ngSubmit)="iniciarSesion()">
+
+      <div class="mb-3">
+        <label for="email" class="form-label">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          class="form-control"
+          placeholder="tuemail@ejemplo.com"
+          formControlName="email">
+
+        @if (formLogin.get('email')?.invalid && formLogin.get('email')?.touched) {
+          <p class="text-danger small mt-1">
+            @if (formLogin.get('email')?.errors?.['required']) {
+              El correo es obligatorio.
+            }
+            @if (formLogin.get('email')?.errors?.['email']) {
+              El formato no es válido.
+            }
+          </p>
+        }
+      </div>
+
+      <div class="mb-3">
+        <label for="password" class="form-label">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          class="form-control"
+          placeholder="********"
+          formControlName="password">
+
+        @if (formLogin.get('password')?.invalid && formLogin.get('password')?.touched) {
+          <p class="text-danger small mt-1">
+            @if (formLogin.get('password')?.errors?.['required']) {
+              La contraseña es obligatoria.
+            }
+            @if (formLogin.get('password')?.errors?.['minlength']) {
+              Debe tener al menos 6 caracteres.
+            }
+          </p>
+        }
+      </div>
+
+      <button
+        type="submit"
+        class="btn btn-primary w-100"
+        [disabled]="formLogin.invalid">
+        Entrar
+      </button>
+    </form>
+
+    <button
+      class="btn btn-link text-secondary w-100 mt-3"
+      (click)="fnToggleLoginHeader.emit()">
+      Cerrar
+    </button>
+  </div>
+</div>
