@@ -42,7 +42,7 @@
         @if (dropdownOpen() && sugerencias().length > 0) {
           <ul class="amigos__dropdown">
             @for (u of sugerencias(); track u.id) {
-              <li class="amigos__suggestion" (mousedown)="seleccionar(u)">
+              <li class="amigos__suggestion" (pointerdown)="seleccionar(u)">
                 <div class="sug-avatar">{{ iniciales(u.nombre, u.apellidos) }}</div>
                 <div class="sug-info">
                   <span class="sug-name">{{ u.nombre }} {{ u.apellidos }}</span>
