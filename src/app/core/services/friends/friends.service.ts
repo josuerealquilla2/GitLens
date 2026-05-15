@@ -35,6 +35,10 @@ export class FriendsService {
     return this.http.get<any[]>(`${this.base}`, { headers: this.h() });
   }
 
+  removeFriend(friendshipId: number): Observable<void> {
+    return this.http.delete<void>(`${this.base}${friendshipId}/`, { headers: this.h() });
+  }
+
   getFriendCount(): Observable<{ friend_count: number; pending_requests: number }> {
     return this.http.get<any>(`${this.base}count/`, { headers: this.h() });
   }

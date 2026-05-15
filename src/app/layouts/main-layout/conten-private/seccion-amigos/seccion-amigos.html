@@ -40,9 +40,9 @@
 
         <!-- Dropdown de sugerencias -->
         @if (dropdownOpen() && sugerencias().length > 0) {
-          <ul class="amigos__dropdown">
+          <ul class="amigos__dropdown" (pointerdown)="onDropdownPointerDown()">
             @for (u of sugerencias(); track u.id) {
-              <li class="amigos__suggestion" (pointerdown)="seleccionar(u)">
+              <li class="amigos__suggestion" (click)="seleccionar(u)">
                 <div class="sug-avatar">{{ iniciales(u.nombre, u.apellidos) }}</div>
                 <div class="sug-info">
                   <span class="sug-name">{{ u.nombre }} {{ u.apellidos }}</span>
@@ -134,7 +134,11 @@
               <span class="user-card__name">{{ a.friend_nombre }} {{ a.friend_apellidos }}</span>
               <span class="user-card__email">{{ a.friend_email }}</span>
             </div>
-            <span class="user-card__status"><i class="bi bi-people-fill"></i> Amigos</span>
+            <button
+              class="user-card__btn user-card__btn--reject"
+              (click)="eliminarAmigo(a.id, a.friend_nombre)"
+              title="Eliminar amigo"
+            ><i class="bi bi-person-x"></i></button>
           </div>
         }
       </div>

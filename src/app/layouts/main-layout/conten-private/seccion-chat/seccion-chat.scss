@@ -149,6 +149,32 @@
     line-height: 1.5;
     flex-shrink: 0;
   }
+
+  &__del-btn {
+    opacity: 0;
+    flex-shrink: 0;
+    width: 28px;
+    height: 28px;
+    border: none;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--text3);
+    font-size: 0.8rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: opacity 0.15s, background 0.15s, color 0.15s;
+    &:hover { background: rgba(239,68,68,0.12); color: #ef4444; }
+  }
+
+  &__item:hover &__del-btn { opacity: 1; }
+
+  // en móvil siempre visible (no hay hover)
+  @media (max-width: 767px) {
+    &__del-btn { opacity: 0.5; }
+    &__item:active &__del-btn { opacity: 1; }
+  }
 }
 
 // ─── Panel derecho ────────────────────────────────────────────

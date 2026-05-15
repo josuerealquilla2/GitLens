@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-import { Subject, debounceTime, distinctUntilChanged, switchMap, of } from 'rxjs';
+import { Subject, debounceTime, distinctUntilChanged, switchMap, of, catchError } from 'rxjs';
 import { FriendsService } from '../../../../core/services/friends/friends.service';
 
 type Tab = 'buscar' | 'solicitudes' | 'amigos';
@@ -26,6 +26,7 @@ export class SeccionAmigos implements OnInit, OnDestroy {
   dropdownOpen = signal(false);
 
   sentRequests = new Set<number>();
+  private dropdownTouched = false;   // evita cerrar dropdown al tocar una sugerencia
 
   private query$ = new Subject<string>();
   private destroy$ = new Subject<void>();
@@ -46,7 +47,9 @@ export class SeccionAmigos implements OnInit, OnDestroy {
           return of([]);
         }
         this.buscando.set(true);
-        return this.friends.searchUsers(q);
+        return this.friends.searchUsers(q).pipe(
+          catchError(() => { this.buscando.set(false); return of([]); })
+        );
       }),
     ).subscribe({
       next: (data) => {
@@ -54,7 +57,6 @@ export class SeccionAmigos implements OnInit, OnDestroy {
         this.dropdownOpen.set(data.length > 0);
         this.buscando.set(false);
       },
-      error: () => { this.buscando.set(false); },
     });
   }
 
@@ -76,8 +78,11 @@ export class SeccionAmigos implements OnInit, OnDestroy {
     this.sugerencias.set([]);
   }
 
+  onDropdownPointerDown() { this.dropdownTouched = true; }
+
   cerrarDropdown() {
-    setTimeout(() => this.dropdownOpen.set(false), 150);
+    if (this.dropdownTouched) { this.dropdownTouched = false; return; }
+    setTimeout(() => this.dropdownOpen.set(false), 200);
   }
 
   cambiarTab(t: Tab) {
@@ -113,6 +118,13 @@ export class SeccionAmigos implements OnInit, OnDestroy {
     this.friends.getFriends().subscribe({
       next: (data) => { this.amigos.set(data); this.cargandoAm.set(false); },
       error: ()     => this.cargandoAm.set(false),
+    });
+  }
+
+  eliminarAmigo(friendshipId: number, nombre: string) {
+    if (!confirm(`¿Eliminar a ${nombre} de tus amigos?`)) return;
+    this.friends.removeFriend(friendshipId).subscribe({
+      next: () => this.amigos.update(prev => prev.filter(a => a.id !== friendshipId)),
     });
   }
 

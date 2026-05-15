@@ -136,6 +136,21 @@ class MessageDeleteView(APIView):
             return Response({'error': 'No encontrado'}, status=404)
 
 
+class ChatRoomDeleteView(APIView):
+    """El usuario abandona la sala; si queda vacía se borra."""
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, room_id):
+        try:
+            room = ChatRoom.objects.get(id=room_id, members=request.user)
+        except ChatRoom.DoesNotExist:
+            return Response({'error': 'Sala no encontrada'}, status=404)
+        room.members.remove(request.user)
+        if room.members.count() == 0:
+            room.delete()
+        return Response(status=status.HTTP_204_NO_CONTENT)
+
+
 class ClearChatView(APIView):
     permission_classes = [IsAuthenticated]
 

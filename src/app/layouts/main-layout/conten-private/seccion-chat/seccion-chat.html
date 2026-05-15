@@ -34,6 +34,11 @@
             @if (room.unread_count > 0) {
               <span class="chat-sidebar__unread">{{ room.unread_count }}</span>
             }
+            <button
+              class="chat-sidebar__del-btn"
+              (click)="eliminarConversacion(room, $event)"
+              title="Eliminar conversación"
+            ><i class="bi bi-trash3"></i></button>
           </li>
         }
       </ul>

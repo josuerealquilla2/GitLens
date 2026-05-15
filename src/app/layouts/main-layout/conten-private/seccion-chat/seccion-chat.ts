@@ -36,6 +36,17 @@ export class SeccionChat implements OnInit {
 
   cerrarChat() { this.activeRoom.set(null); this.showChat.set(false); }
 
+  eliminarConversacion(room: any, event: Event) {
+    event.stopPropagation();
+    if (!confirm(`¿Eliminar la conversación con ${room.display_name}?`)) return;
+    this.chat.deleteRoom(room.id).subscribe({
+      next: () => {
+        this.chat.rooms.update(prev => prev.filter(r => r.id !== room.id));
+        if (this.activeRoom()?.id === room.id) this.cerrarChat();
+      },
+    });
+  }
+
   abrirModal(tipo: 'privado' | 'grupo') {
     this.modalTipo.set(tipo);
     this.selIds.clear();

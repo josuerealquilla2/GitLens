@@ -89,6 +89,10 @@ export class ChatService {
     return true;
   }
 
+  deleteRoom(roomId: number): Observable<void> {
+    return this.http.delete<void>(`${this.base}rooms/${roomId}/`, { headers: this.h() });
+  }
+
   deleteMessage(roomId: number, msgId: number): Observable<void> {
     return this.http.delete<void>(`${this.base}rooms/${roomId}/messages/${msgId}/`, { headers: this.h() });
   }

@@ -84,6 +84,20 @@ class FriendsListView(APIView):
         return Response(FriendshipSerializer(fs, many=True, context={'request': request}).data)
 
 
+class FriendDeleteView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def delete(self, request, pk):
+        try:
+            friendship = Friendship.objects.get(
+                Q(user1=request.user) | Q(user2=request.user), id=pk
+            )
+            friendship.delete()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Friendship.DoesNotExist:
+            return Response({'error': 'Amistad no encontrada'}, status=404)
+
+
 class FriendCountView(APIView):
     permission_classes = [IsAuthenticated]
 
