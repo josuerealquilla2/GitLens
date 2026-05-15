@@ -1,4 +1,4 @@
-import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, signal, ViewChild, ElementRef, AfterViewChecked, effect, untracked } from '@angular/core';
+import { Component, Input, Output, EventEmitter, OnInit, OnDestroy, OnChanges, SimpleChanges, signal, ViewChild, ElementRef, AfterViewChecked, effect, untracked } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
@@ -25,7 +25,7 @@ const LANGS: LangOption[] = [
   templateUrl: './chat-room.html',
   styleUrl: './chat-room.scss',
 })
-export class ChatRoom implements OnInit, OnDestroy, AfterViewChecked {
+export class ChatRoom implements OnInit, OnChanges, OnDestroy, AfterViewChecked {
   @Input()  room: any = null;
   @Output() back = new EventEmitter<void>();
   @ViewChild('msgList') msgList!: ElementRef;
@@ -67,9 +67,22 @@ export class ChatRoom implements OnInit, OnDestroy, AfterViewChecked {
   }
 
   ngOnInit() {
-    if (!this.room) return;
-    this.cargando.set(true);
+    if (this.room) this.loadRoom();
+  }
+
+  ngOnChanges(changes: SimpleChanges) {
+    if (changes['room'] && !changes['room'].firstChange && this.room) {
+      this.loadRoom();
+    }
+  }
+
+  private loadRoom() {
+    this.chat.disconnect();
     this.chat.messages.set([]);
+    this.translatedCache.set(new Map());
+    this.pendingTranslations.clear();
+    this.targetLang.set(null);
+    this.cargando.set(true);
 
     this.chat.getMessages(this.room.id).subscribe({
       next: (msgs) => {
