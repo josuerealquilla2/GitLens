@@ -298,7 +298,7 @@
 
 @media (max-width: 767px) {
   .chat-layout {
-    height: calc(100vh - 60px);
+    height: calc(100vh - 64px);
     position: relative;
   }
 
@@ -337,7 +337,7 @@
 @media (max-width: 480px) {
   .chat-layout {
     flex-direction: column;
-    height: calc(100vh - 60px);
+    height: calc(100vh - 56px);
   }
 
   .chat-sidebar {
@@ -346,17 +346,20 @@
     border-right: none;
     border-bottom: 1px solid var(--border);
 
-    &__header { padding: 0.85rem 1rem; }
-    &__title { font-size: 0.95rem; }
-    &__item { padding: 0.65rem 1rem; }
+    &__header { padding: 0.75rem 0.85rem; }
+    &__title { font-size: 0.92rem; }
+    &__item { padding: 0.6rem 0.85rem; }
     &__new-btn { width: 34px; height: 34px; }
     &__list { padding: 0.25rem 0; }
+    &__avatar { width: 38px; height: 38px; font-size: 0.82rem; }
+    &__name { font-size: 0.88rem; }
+    &__last { font-size: 0.75rem; }
   }
 
   .chat-main {
     display: none;
     position: fixed;
-    inset: 60px 0 0 0;
+    inset: 56px 0 0 0;
     z-index: 500;
     background: var(--bg);
 
@@ -367,6 +370,7 @@
     width: calc(100vw - 24px);
     max-height: 90vh;
     padding: 1.25rem;
+    border-radius: 14px;
   }
 }
 

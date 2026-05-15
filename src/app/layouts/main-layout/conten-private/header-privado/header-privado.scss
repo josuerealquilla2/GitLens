@@ -91,17 +91,20 @@
   }
 
   @media (max-width: 480px) {
-    width: 200px;
+    width: 240px;
     transform: translateX(-100%);
     &--open { transform: translateX(0); box-shadow: 4px 0 32px var(--shadow); }
-    &__logo { padding: 0 14px 18px; }
-    &__item { padding: 9px 10px; font-size: 0.82rem; }
+    &__logo { padding: 0 14px 16px; }
+    &__logo-text { font-size: 1rem; }
+    &__item { padding: 10px 12px; font-size: 0.84rem; gap: 10px; }
+    &__logout { margin: 8px 10px; padding: 9px 12px; font-size: 0.82rem; }
   }
 
   @media (min-width: 481px) and (max-width: 767px) {
-    width: 220px;
+    width: 240px;
     transform: translateX(-100%);
     &--open { transform: translateX(0); box-shadow: 4px 0 32px var(--shadow); }
+    &__item { padding: 10px 14px; font-size: 0.86rem; }
   }
 
   @media (min-width: 768px) and (max-width: 1024px) { width: 200px; }
@@ -233,26 +236,30 @@
   }
 
   @media (max-width: 480px) {
-    left: 0; height: 60px;
-    &__inner { padding: 0 12px; gap: 8px; }
+    left: 0; height: 56px;
+    &__inner { padding: 0 10px; gap: 6px; }
     &__hamburger { display: flex; }
-    &__search-input { width: 100px; font-size: 0.8rem; }
+    &__search { flex: 1; min-width: 0; }
+    &__search-input { width: 100%; font-size: 0.8rem; padding: 7px 8px 7px 10px; }
     &__user { display: none; }
     &__langs { display: none; }
-    &__theme-btn { width: 30px; height: 30px; font-size: 0.85rem; }
+    &__theme-btn { width: 32px; height: 32px; font-size: 0.85rem; flex-shrink: 0; }
   }
 
   @media (min-width: 481px) and (max-width: 767px) {
     left: 0;
     &__inner { padding: 0 14px; gap: 10px; }
     &__hamburger { display: flex; }
-    &__search-input { width: 130px; }
+    &__search { flex: 1; min-width: 0; }
+    &__search-input { width: 100%; }
+    &__user { display: flex; }
     &__langs { display: none; }
   }
 
   @media (min-width: 768px) and (max-width: 1024px) {
     left: 200px;
-    &__search-input { width: 150px; }
+    &__inner { padding: 0 16px; gap: 12px; }
+    &__search-input { width: 180px; }
     &__hamburger { display: none; }
     &__langs { flex: 1; }
   }

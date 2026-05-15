@@ -396,8 +396,10 @@
     &__input-bar { padding: 0.5rem 0.75rem; gap: 0.35rem; }
     &__textarea  { font-size: 0.85rem; padding: 0.55rem 0.75rem; border-radius: 10px; }
     &__send, &__lang-btn { width: 36px; height: 36px; font-size: 0.85rem; }
-    &__lang-menu { min-width: 145px; }
+      &__lang-menu { min-width: 145px; }
     &__clear-btn { width: 28px; height: 28px; font-size: 0.82rem; }
+    &__clear-confirm { font-size: 0.74rem; padding: 0.25rem 0.5rem; gap: 0.3rem; }
+    &__lang-btn { width: 34px; height: 34px; }
   }
   .msg {
     &__body   { max-width: 82%; }
