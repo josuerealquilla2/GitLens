@@ -1,0 +1,123 @@
+<!-- Overlay para cerrar sidebar en móvil -->
+@if (sidebarOpen()) {
+  <div class="sidebar-overlay" (click)="toggleSidebar()"></div>
+}
+
+<!-- Sidebar izquierdo -->
+<nav class="sidebar" [class.sidebar--open]="sidebarOpen()">
+  <div class="sidebar__logo" (click)="navigate('inicio')" style="cursor:pointer" title="Ir al inicio">
+    <span class="sidebar__logo-icon">⬡</span>
+    <span class="sidebar__logo-text">GitLens</span>
+  </div>
+
+  <ul class="sidebar__nav">
+    <li class="sidebar__item" [class.active]="navService.activeSection() === 'inicio'" (click)="navigate('inicio')" title="Inicio">
+      <i class="bi bi-house-door-fill"></i><span>Inicio</span>
+    </li>
+    <li class="sidebar__item" [class.active]="navService.activeSection() === 'tendencias'" (click)="navigate('tendencias')" title="Tendencias">
+      <i class="bi bi-fire"></i><span>Tendencias</span>
+    </li>
+    <li class="sidebar__item" [class.active]="navService.activeSection() === 'repositorios'" (click)="navigate('repositorios')" title="Guardados">
+      <i class="bi bi-journal-code"></i><span>Guardados</span>
+    </li>
+    <li class="sidebar__item" [class.active]="navService.activeSection() === 'historial'" (click)="navigate('historial')" title="Historial">
+      <i class="bi bi-clock-history"></i><span>Historial</span>
+    </li>
+    <li class="sidebar__item" [class.active]="navService.activeSection() === 'favoritos'" (click)="navigate('favoritos')" title="Favoritos">
+      <i class="bi bi-star"></i><span>Favoritos</span>
+    </li>
+    <li class="sidebar__item" [class.active]="navService.activeSection() === 'amigos'" (click)="navigate('amigos')" title="Amigos">
+      <i class="bi bi-people"></i><span>Amigos</span>
+    </li>
+    <li class="sidebar__item" [class.active]="navService.activeSection() === 'chat'" (click)="navigate('chat')" title="Chat">
+      <i class="bi bi-chat-dots"></i><span>Chat</span>
+    </li>
+  </ul>
+
+  <ul class="sidebar__nav sidebar__nav--bottom">
+    <li class="sidebar__item" [class.active]="navService.activeSection() === 'perfil'" (click)="navigate('perfil')" title="Mi perfil">
+      <i class="bi bi-person-circle"></i><span>Mi perfil</span>
+    </li>
+  </ul>
+
+  <button class="sidebar__logout" (click)="logout()" title="Cerrar sesión">
+    <i class="bi bi-box-arrow-left"></i><span>Salir</span>
+  </button>
+</nav>
+
+<!-- Topbar -->
+<header class="topbar">
+  <div class="topbar__inner">
+
+    <!-- Hamburger — solo móvil -->
+    <button class="topbar__hamburger" (click)="toggleSidebar()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+
+    <!-- Buscador -->
+    <div class="topbar__search">
+      <input
+        class="topbar__search-input"
+        type="text"
+        placeholder="Buscar repositorios..."
+        [(ngModel)]="searchQuery"
+        (keydown)="onSearchKey($event)"
+      />
+      <button class="topbar__search-btn" (click)="buscar()" title="Buscar">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Pills de lenguajes — overflow:hidden solo en esta zona -->
+    <div class="topbar__langs">
+      <div class="topbar__pills-wrap">
+        <button class="lang-pill" (click)="seleccionarLenguaje('Python')"><i class="devicon-python-plain colored"></i><span>Python</span></button>
+        <button class="lang-pill" (click)="seleccionarLenguaje('JavaScript')"><i class="devicon-javascript-plain colored"></i><span>JS</span></button>
+        <button class="lang-pill" (click)="seleccionarLenguaje('TypeScript')"><i class="devicon-typescript-plain colored"></i><span>TS</span></button>
+        <button class="lang-pill" (click)="seleccionarLenguaje('Go')"><i class="devicon-go-plain colored"></i><span>Go</span></button>
+        <button class="lang-pill" (click)="seleccionarLenguaje('Rust')"><i class="devicon-rust-plain colored"></i><span>Rust</span></button>
+        <button class="lang-pill" (click)="seleccionarLenguaje('Java')"><i class="devicon-java-plain colored"></i><span>Java</span></button>
+        <button class="lang-pill" (click)="seleccionarLenguaje('C++')"><i class="devicon-cplusplus-plain colored"></i><span>C++</span></button>
+        <button class="lang-pill" (click)="seleccionarLenguaje('Ruby')"><i class="devicon-ruby-plain colored"></i><span>Ruby</span></button>
+      </div>
+    </div>
+
+    <!-- "Más" fuera del contenedor overflow:hidden para que el dropdown no se corte -->
+    <div class="lang-more" (click)="$event.stopPropagation()">
+      <button class="lang-pill lang-pill--more" (click)="toggleDropdown()">
+        Más <i class="bi bi-chevron-down" [class.rotated]="abierto"></i>
+      </button>
+      <ul class="lang-dropdown" [class.open]="abierto">
+        <li (click)="seleccionarLenguaje('C#')"><i class="devicon-csharp-plain colored"></i><span>C#</span></li>
+        <li (click)="seleccionarLenguaje('PHP')"><i class="devicon-php-plain colored"></i><span>PHP</span></li>
+        <li (click)="seleccionarLenguaje('Swift')"><i class="devicon-swift-plain colored"></i><span>Swift</span></li>
+        <li (click)="seleccionarLenguaje('Kotlin')"><i class="devicon-kotlin-plain colored"></i><span>Kotlin</span></li>
+        <li (click)="seleccionarLenguaje('Dart')"><i class="devicon-dart-plain colored"></i><span>Dart</span></li>
+        <li (click)="seleccionarLenguaje('Scala')"><i class="devicon-scala-plain colored"></i><span>Scala</span></li>
+        <li (click)="seleccionarLenguaje('Shell')"><i class="devicon-bash-plain"></i><span>Shell</span></li>
+        <li (click)="seleccionarLenguaje('R')"><i class="devicon-r-plain colored"></i><span>R</span></li>
+        <li (click)="seleccionarLenguaje('Lua')"><i class="devicon-lua-plain colored"></i><span>Lua</span></li>
+        <li (click)="seleccionarLenguaje('Elixir')"><i class="devicon-elixir-plain colored"></i><span>Elixir</span></li>
+        <li (click)="seleccionarLenguaje('Haskell')"><i class="devicon-haskell-plain colored"></i><span>Haskell</span></li>
+        <li (click)="seleccionarLenguaje('C')"><i class="devicon-c-plain colored"></i><span>C</span></li>
+      </ul>
+    </div>
+
+    <!-- Toggle tema -->
+    <button class="topbar__theme-btn" (click)="theme.toggle()" [title]="theme.theme() === 'dark' ? 'Modo claro' : 'Modo oscuro'">
+      @if (theme.theme() === 'dark') {
+        <i class="bi bi-sun-fill"></i>
+      } @else {
+        <i class="bi bi-moon-fill"></i>
+      }
+    </button>
+
+    <!-- Avatar usuario -->
+    <div class="topbar__user" (click)="navigate('perfil')" title="Mi perfil">
+      <div class="topbar__avatar">{{ iniciales() }}</div>
+    </div>
+
+  </div>
+</header>

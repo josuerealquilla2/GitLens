@@ -1,0 +1,175 @@
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 16px;
+  animation: fadeIn 0.15s ease;
+  overflow-y: auto;
+}
+
+.modal-box {
+  background: var(--modal-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  width: 100%;
+  max-width: 460px;
+  padding: 32px;
+  position: relative;
+  animation: slideUp 0.2s ease;
+  margin: auto;
+  box-shadow: 0 24px 60px var(--shadow);
+
+  &__header { text-align: center; margin-bottom: 28px; }
+  &__logo { font-size: 2rem; color: var(--red); line-height: 1; margin-bottom: 12px; }
+  &__title { font-size: 1.3rem; font-weight: 700; color: var(--text); margin: 0 0 6px; }
+  &__sub { font-size: 0.85rem; color: var(--text2); margin: 0; }
+
+  &__close {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text3);
+    width: 34px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: background 0.2s, color 0.2s;
+    &:hover { background: var(--surface3); color: var(--text); }
+  }
+
+  &__form { display: flex; flex-direction: column; gap: 16px; }
+
+  @media (max-width: 480px) {
+    padding: 24px 18px;
+    border-radius: 12px;
+    &__title { font-size: 1.1rem; }
+    &__sub { font-size: 0.8rem; }
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+    max-width: 420px;
+    padding: 28px 24px;
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) { max-width: 460px; }
+
+  @media (min-width: 1281px) {
+    max-width: 520px;
+    padding: 40px 36px;
+    border-radius: 20px;
+    &__title { font-size: 1.5rem; }
+  }
+}
+
+.field-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+
+  @media (max-width: 480px) {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+
+  &__label { font-size: 0.82rem; font-weight: 500; color: var(--text2); }
+  &__input {
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.875rem;
+    padding: 10px 14px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    font-family: 'Poppins', sans-serif;
+    width: 100%;
+
+    &::placeholder { color: var(--text3); }
+    &:focus {
+      border-color: var(--red);
+      box-shadow: 0 0 0 3px rgba(79,70,229,0.1);
+    }
+  }
+  &__error { font-size: 0.74rem; color: #ef4444; }
+}
+
+.btn-submit {
+  background: var(--red);
+  border: none;
+  border-radius: 10px;
+  color: #fff;
+  font-size: 0.95rem;
+  font-weight: 600;
+  padding: 13px;
+  cursor: pointer;
+  width: 100%;
+  transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+  font-family: 'Poppins', sans-serif;
+  margin-top: 4px;
+  box-shadow: 0 4px 14px rgba(79,70,229,0.28);
+
+  &:hover { background: var(--red-dark); transform: translateY(-1px); box-shadow: 0 6px 18px rgba(79,70,229,0.36); }
+  &:active { transform: translateY(0); }
+  &:disabled { background: var(--surface3); color: var(--text3); cursor: default; transform: none; box-shadow: none; }
+}
+
+.form-error-banner {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(239,68,68,0.07);
+  border: 1px solid rgba(239,68,68,0.22);
+  border-radius: 10px;
+  color: #ef4444;
+  font-size: 0.84rem;
+  padding: 10px 14px;
+  margin-bottom: 4px;
+
+  svg { flex-shrink: 0; }
+}
+
+.success-state {
+  text-align: center;
+  padding: 12px 0 8px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+
+  &__icon { font-size: 2.5rem; }
+
+  h4 { font-size: 1.2rem; font-weight: 700; color: var(--text); margin: 0; }
+  p  { font-size: 0.85rem; color: var(--text2); margin: 0; line-height: 1.6; }
+}
+
+.btn-spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255,255,255,0.3);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  vertical-align: middle;
+  margin-right: 4px;
+}
+
+@keyframes spin    { to { transform: rotate(360deg); } }
+@keyframes fadeIn  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }

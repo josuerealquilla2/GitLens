@@ -1,0 +1,139 @@
+<div class="modal-overlay" (click)="fnToggleLoginHeader.emit()">
+  <div class="modal-box" [class.modal-box--shake]="shakeError()" (click)="$event.stopPropagation()">
+
+    <!-- Botón cerrar -->
+    <button class="modal-box__close" (click)="fnToggleLoginHeader.emit()" aria-label="Cerrar">
+      <i class="bi bi-x-lg"></i>
+    </button>
+
+    <!-- Header -->
+    <div class="modal-box__header">
+      <div class="modal-box__logo">
+        <i class="bi bi-github"></i>
+      </div>
+      <h3 class="modal-box__title">Bienvenido de vuelta</h3>
+      <p class="modal-box__sub">Inicia sesión en tu cuenta de GitLens</p>
+    </div>
+
+    <!-- Banner de error -->
+    @if (errorMsg()) {
+      <div class="form-error-banner">
+        <i class="bi bi-exclamation-circle-fill"></i>
+        <span>{{ errorMsg() }}</span>
+        @if (intentosFallidos() > 0 && intentosFallidos() < 4) {
+          <span class="form-error-banner__attempts">
+            {{ intentosRestantes }} intento{{ intentosRestantes !== 1 ? 's' : '' }} restante{{ intentosRestantes !== 1 ? 's' : '' }}
+          </span>
+        }
+      </div>
+    }
+
+    <!-- Banner de cooldown -->
+    @if (bloqueado) {
+      <div class="form-cooldown-banner">
+        <i class="bi bi-shield-lock-fill"></i>
+        <div>
+          <strong>Demasiados intentos fallidos</strong>
+          <span>Espera <strong>{{ cooldownRestante() }}s</strong> antes de intentarlo de nuevo.</span>
+        </div>
+      </div>
+    }
+
+    <!-- Formulario -->
+    <form class="modal-box__form" [formGroup]="formLogin" (ngSubmit)="iniciarSesion()" novalidate>
+
+      <!-- Email -->
+      <div class="field" [class.field--error]="formLogin.get('email')?.invalid && formLogin.get('email')?.touched">
+        <label class="field__label" for="login-email">
+          Correo electrónico
+        </label>
+        <div class="field__input-wrap">
+          <i class="bi bi-envelope field__icon"></i>
+          <input
+            id="login-email"
+            type="email"
+            class="field__input"
+            placeholder="tuemail@ejemplo.com"
+            formControlName="email"
+            autocomplete="email"
+            [attr.aria-invalid]="formLogin.get('email')?.invalid && formLogin.get('email')?.touched"
+          />
+        </div>
+        @if (formLogin.get('email')?.invalid && formLogin.get('email')?.touched) {
+          <span class="field__error">
+            <i class="bi bi-exclamation-circle"></i>
+            @if (formLogin.get('email')?.errors?.['required']) { El correo es obligatorio. }
+            @if (formLogin.get('email')?.errors?.['email']) { Introduce un correo válido. }
+          </span>
+        }
+      </div>
+
+      <!-- Contraseña -->
+      <div class="field" [class.field--error]="formLogin.get('password')?.invalid && formLogin.get('password')?.touched">
+        <label class="field__label" for="login-password">
+          Contraseña
+        </label>
+        <div class="field__input-wrap">
+          <i class="bi bi-lock field__icon"></i>
+          <input
+            id="login-password"
+            [type]="showPassword() ? 'text' : 'password'"
+            class="field__input"
+            placeholder="••••••••"
+            formControlName="password"
+            autocomplete="current-password"
+            [attr.aria-invalid]="formLogin.get('password')?.invalid && formLogin.get('password')?.touched"
+          />
+          <button
+            type="button"
+            class="field__eye"
+            (click)="togglePassword()"
+            [title]="showPassword() ? 'Ocultar contraseña' : 'Mostrar contraseña'"
+            tabindex="-1"
+            aria-label="Alternar visibilidad de contraseña">
+            <i [class]="showPassword() ? 'bi bi-eye-slash' : 'bi bi-eye'"></i>
+          </button>
+        </div>
+        @if (formLogin.get('password')?.invalid && formLogin.get('password')?.touched) {
+          <span class="field__error">
+            <i class="bi bi-exclamation-circle"></i>
+            @if (formLogin.get('password')?.errors?.['required']) { La contraseña es obligatoria. }
+            @if (formLogin.get('password')?.errors?.['minlength']) { Mínimo 6 caracteres. }
+          </span>
+        }
+      </div>
+
+      <!-- Link olvidé contraseña -->
+      <div class="form-links">
+        <span class="form-links__forgot">¿Olvidaste tu contraseña?</span>
+      </div>
+
+      <!-- Botón submit -->
+      <button
+        type="submit"
+        class="btn-submit"
+        [disabled]="cargando() || bloqueado">
+        @if (bloqueado) {
+          <i class="bi bi-shield-lock"></i>
+          Bloqueado ({{ cooldownRestante() }}s)
+        } @else if (cargando()) {
+          <span class="btn-spinner"></span>
+          Iniciando sesión...
+        } @else {
+          <i class="bi bi-box-arrow-in-right"></i>
+          Iniciar sesión
+        }
+      </button>
+
+    </form>
+
+    <!-- Footer: ir a registro -->
+    <p class="modal-box__footer">
+      ¿No tienes cuenta?
+      <button type="button" class="modal-box__link" (click)="fnToggleLoginHeader.emit()">
+        Regístrate gratis
+      </button>
+    </p>
+
+  </div>
+</div>

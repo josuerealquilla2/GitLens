@@ -1,15 +1,5 @@
 @use 'sass:color';
 @use './variables' as *;
-@use "bootstrap/scss/bootstrap" as bs with (
-  $primary: $primary,
-  $secondary: $secondary,
-  $success: $success,
-  $danger: $danger,
-  $warning: $warning,
-  $info: $info,
-  $light: $light,
-  $dark: $dark,
-);
 
 :root {
   --bs-primary-rgb: #{color.channel($primary, "red")}, #{color.channel($primary, "green")}, #{color.channel($primary, "blue")};

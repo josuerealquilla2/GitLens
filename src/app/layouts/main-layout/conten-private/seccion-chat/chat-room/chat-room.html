@@ -1,0 +1,104 @@
+<div class="chat-room" (click)="closeLangMenu(); confirmClear.set(false)">
+
+  <!-- Header -->
+  <div class="chat-room__header">
+    <!-- Botón volver (solo móvil) -->
+    <button class="chat-room__back-btn" (click)="back.emit()" title="Volver">
+      <i class="bi bi-arrow-left"></i>
+    </button>
+    <div class="chat-room__avatar">{{ iniciales(room?.display_name, '') }}</div>
+    <div class="chat-room__title-wrap">
+      <span class="chat-room__title">{{ room?.display_name }}</span>
+      <span class="chat-room__sub"><span class="dot dot--on"></span> En línea</span>
+    </div>
+
+    <div class="chat-room__clear-wrap" (click)="$event.stopPropagation()">
+      @if (confirmClear()) {
+        <div class="chat-room__clear-confirm">
+          <span>¿Vaciar chat?</span>
+          <button class="chat-room__clear-yes" (click)="vaciarChat()">Sí</button>
+          <button class="chat-room__clear-no"  (click)="confirmClear.set(false)">No</button>
+        </div>
+      } @else {
+        <button class="chat-room__clear-btn" (click)="confirmClear.set(true)" title="Vaciar chat">
+          <i class="bi bi-trash3"></i>
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Mensajes -->
+  <div class="chat-room__messages" #msgList>
+    @if (cargando()) {
+      <div class="chat-room__loading"><div class="spinner"></div></div>
+    }
+
+    @for (m of chat.messages(); track m.id; let i = $index) {
+      @if (showDateSep(chat.messages(), i)) {
+        <div class="chat-room__date-sep"><span>{{ formatDate(m.timestamp) }}</span></div>
+      }
+
+      <div class="msg" [class.msg--mine]="m.sender_id === myId()">
+        @if (m.sender_id !== myId()) {
+          <div class="msg__avatar">{{ iniciales(m.sender_nombre, m.sender_apellidos) }}</div>
+        }
+        <div class="msg__body">
+          @if (m.sender_id !== myId()) {
+            <span class="msg__sender">{{ m.sender_nombre }}</span>
+          }
+          <div class="msg__bubble-wrap">
+            <div class="msg__bubble">
+              {{ m.content }}
+              @if (getTranslation(m); as t) {
+                <div class="msg__translation">{{ currentLangFlag() }} {{ t }}</div>
+              }
+              <span class="msg__time">{{ formatTime(m.timestamp) }}</span>
+            </div>
+            @if (m.sender_id === myId()) {
+              <button class="msg__delete-btn" (click)="deleteMsg(m.id)" title="Eliminar">
+                <i class="bi bi-trash3"></i>
+              </button>
+            }
+          </div>
+        </div>
+      </div>
+    }
+
+    @if (!cargando() && chat.messages().length === 0) {
+      <p class="chat-room__empty">Sé el primero en escribir algo!</p>
+    }
+  </div>
+
+  <!-- Input bar -->
+  <div class="chat-room__input-bar">
+    <!-- Selector de idioma -->
+    <div class="chat-room__lang-wrap" (click)="$event.stopPropagation()">
+      <button class="chat-room__lang-btn" (click)="toggleLangMenu($event)" title="Traducir">
+        @if (targetLang()) { {{ currentLangFlag() }} } @else { 🌐 }
+      </button>
+      @if (langMenuOpen()) {
+        <ul class="chat-room__lang-menu">
+          <li (click)="selectLang(null)" [class.selected]="targetLang() === null">🌐 Sin traducción</li>
+          @for (l of langs; track l.code) {
+            <li (click)="selectLang(l.code)" [class.selected]="targetLang() === l.code">
+              {{ l.flag }} {{ l.label }}
+            </li>
+          }
+        </ul>
+      }
+    </div>
+
+    <textarea
+      class="chat-room__textarea"
+      [(ngModel)]="texto"
+      (keydown)="onKey($event)"
+      placeholder="Escribe un mensaje..."
+      rows="1"
+    ></textarea>
+
+    <button class="chat-room__send" (click)="enviar()" [disabled]="!texto.trim()">
+      <i class="bi bi-send-fill"></i>
+    </button>
+  </div>
+
+</div>

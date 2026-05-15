@@ -1,0 +1,144 @@
+<div class="amigos">
+
+  <!-- Tabs -->
+  <div class="amigos__tabs">
+    <button class="amigos__tab" [class.active]="tab() === 'buscar'"     (click)="cambiarTab('buscar')">
+      <i class="bi bi-search"></i> Buscar
+    </button>
+    <button class="amigos__tab" [class.active]="tab() === 'solicitudes'" (click)="cambiarTab('solicitudes')">
+      <i class="bi bi-person-check"></i> Solicitudes
+      @if (solicitudes().length) {
+        <span class="amigos__badge">{{ solicitudes().length }}</span>
+      }
+    </button>
+    <button class="amigos__tab" [class.active]="tab() === 'amigos'"     (click)="cambiarTab('amigos')">
+      <i class="bi bi-people-fill"></i> Mis amigos
+    </button>
+  </div>
+
+  <!-- ─── TAB BUSCAR ─── -->
+  @if (tab() === 'buscar') {
+
+    <!-- Barra de búsqueda con autocomplete -->
+    <div class="amigos__search-wrap">
+      <div class="amigos__search-bar">
+        <div class="amigos__input-wrap">
+          <i class="bi bi-search amigos__input-icon"></i>
+          <input
+            class="amigos__input"
+            type="text"
+            placeholder="Busca por nombre o email..."
+            [(ngModel)]="query"
+            (input)="onInput()"
+            (blur)="cerrarDropdown()"
+            autocomplete="off"
+          />
+          @if (buscando()) {
+            <span class="amigos__spinner"></span>
+          }
+        </div>
+
+        <!-- Dropdown de sugerencias -->
+        @if (dropdownOpen() && sugerencias().length > 0) {
+          <ul class="amigos__dropdown">
+            @for (u of sugerencias(); track u.id) {
+              <li class="amigos__suggestion" (mousedown)="seleccionar(u)">
+                <div class="sug-avatar">{{ iniciales(u.nombre, u.apellidos) }}</div>
+                <div class="sug-info">
+                  <span class="sug-name">{{ u.nombre }} {{ u.apellidos }}</span>
+                  <span class="sug-email">{{ u.email }}</span>
+                </div>
+                @if (sentRequests.has(u.id)) {
+                  <span class="sug-sent"><i class="bi bi-check2"></i></span>
+                } @else {
+                  <span class="sug-add"><i class="bi bi-person-plus"></i></span>
+                }
+              </li>
+            }
+          </ul>
+        }
+      </div>
+    </div>
+
+    <!-- Resultados seleccionados -->
+    <div class="amigos__grid">
+      @for (u of resultados(); track u.id) {
+        <div class="user-card">
+          <div class="user-card__avatar">{{ iniciales(u.nombre, u.apellidos) }}</div>
+          <div class="user-card__info">
+            <span class="user-card__name">{{ u.nombre }} {{ u.apellidos }}</span>
+            <span class="user-card__email">{{ u.email }}</span>
+          </div>
+          @if (sentRequests.has(u.id)) {
+            <button class="user-card__btn user-card__btn--sent" disabled>
+              <i class="bi bi-check2"></i> Enviada
+            </button>
+          } @else {
+            <button class="user-card__btn" (click)="enviarSolicitud(u.id)">
+              <i class="bi bi-person-plus"></i> Solicitud
+            </button>
+          }
+        </div>
+      }
+
+      @if (resultados().length === 0) {
+        <div class="amigos__hint">
+          <i class="bi bi-search" style="font-size:2rem;color:#333"></i>
+          <p>Escribe 2 o más letras para ver sugerencias</p>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- ─── TAB SOLICITUDES ─── -->
+  @if (tab() === 'solicitudes') {
+    @if (cargandoSol()) {
+      <div class="amigos__loading"><div class="spinner"></div></div>
+    } @else if (solicitudes().length === 0) {
+      <p class="amigos__empty">No tienes solicitudes pendientes.</p>
+    } @else {
+      <div class="amigos__grid">
+        @for (s of solicitudes(); track s.id) {
+          <div class="user-card">
+            <div class="user-card__avatar">{{ iniciales(s.sender_nombre, s.sender_apellidos) }}</div>
+            <div class="user-card__info">
+              <span class="user-card__name">{{ s.sender_nombre }} {{ s.sender_apellidos }}</span>
+              <span class="user-card__email">{{ s.sender_email }}</span>
+            </div>
+            <div class="user-card__actions">
+              <button class="user-card__btn user-card__btn--accept" (click)="responder(s.id, 'accept')">
+                <i class="bi bi-check-lg"></i> Aceptar
+              </button>
+              <button class="user-card__btn user-card__btn--reject" (click)="responder(s.id, 'reject')">
+                <i class="bi bi-x-lg"></i>
+              </button>
+            </div>
+          </div>
+        }
+      </div>
+    }
+  }
+
+  <!-- ─── TAB MIS AMIGOS ─── -->
+  @if (tab() === 'amigos') {
+    @if (cargandoAm()) {
+      <div class="amigos__loading"><div class="spinner"></div></div>
+    } @else if (amigos().length === 0) {
+      <p class="amigos__empty">Aún no tienes amigos. ¡Busca y envía solicitudes!</p>
+    } @else {
+      <div class="amigos__grid">
+        @for (a of amigos(); track a.id) {
+          <div class="user-card">
+            <div class="user-card__avatar">{{ iniciales(a.friend_nombre, a.friend_apellidos) }}</div>
+            <div class="user-card__info">
+              <span class="user-card__name">{{ a.friend_nombre }} {{ a.friend_apellidos }}</span>
+              <span class="user-card__email">{{ a.friend_email }}</span>
+            </div>
+            <span class="user-card__status"><i class="bi bi-people-fill"></i> Amigos</span>
+          </div>
+        }
+      </div>
+    }
+  }
+
+</div>

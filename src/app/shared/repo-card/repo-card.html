@@ -1,0 +1,148 @@
+<div class="repo-card">
+
+  <!-- ── Thumbnail / Carrusel ── -->
+  <div class="repo-card__thumb">
+
+    @if (previewImages.length > 0) {
+
+      <!-- Carrusel de imágenes -->
+      <div class="carousel">
+
+        <!-- Imagen activa -->
+        <img
+          [src]="previewImages[carouselIdx()]"
+          alt="preview"
+          loading="lazy"
+          class="carousel__img"
+          (error)="onSlideImgError(previewImages[carouselIdx()])" />
+
+        <!-- Overlay del badge de lenguaje -->
+        <span class="lang-badge-overlay"
+          [style.background]="(langKey | languageIcon).color"
+          [title]="(langKey | languageIcon).tooltip">
+          {{ (langKey | languageIcon).icon }}
+        </span>
+
+        <!-- Flechas (solo si hay más de una imagen) -->
+        @if (previewImages.length > 1) {
+          <button class="carousel__btn carousel__btn--prev" (click)="prevSlide($event)" title="Anterior">
+            <i class="bi bi-chevron-left"></i>
+          </button>
+          <button class="carousel__btn carousel__btn--next" (click)="nextSlide($event)" title="Siguiente">
+            <i class="bi bi-chevron-right"></i>
+          </button>
+
+          <!-- Dots -->
+          <div class="carousel__dots">
+            @for (img of previewImages; track $index) {
+              <span
+                class="carousel__dot"
+                [class.carousel__dot--active]="$index === carouselIdx()"
+                (click)="goToSlide($event, $index)">
+              </span>
+            }
+          </div>
+        }
+
+      </div><!-- /carousel -->
+
+    } @else {
+
+      <!-- Placeholder cuando no hay imágenes o falló la carga -->
+      <div class="repo-card__thumb-placeholder"
+        [style.background]="'#0a0a0a'">
+        <span class="lang-badge lang-badge--large"
+          [style.background]="(langKey | languageIcon).color"
+          [title]="(langKey | languageIcon).tooltip">
+          {{ (langKey | languageIcon).icon }}
+        </span>
+      </div>
+
+    }
+
+    <!-- Tooltip educativo (siempre presente) -->
+    <div class="repo-card__edu-tooltip">
+      <span class="edu-icon">💡</span> {{ (langKey | languageIcon).tooltip }}
+    </div>
+
+  </div><!-- /thumb -->
+
+  <!-- ── Body ── -->
+  <div class="repo-card__body">
+    <div class="repo-card__header">
+      <img [src]="repo.owner_avatar ?? repo.avatar" class="repo-card__avatar" alt="owner" />
+      <div class="repo-card__meta">
+        <h6 class="repo-card__title" [title]="repo.name">{{ repo.name }}</h6>
+        <span class="repo-card__author">{{ repo.owner ?? repo.creador }}</span>
+      </div>
+    </div>
+
+    <p class="repo-card__desc">{{ repo.about ?? repo.description ?? 'Sin descripción' }}</p>
+
+    <div class="repo-card__stats">
+      <span class="stat">
+        <span class="stat-icon">⭐</span>
+        {{ (repo.stars ?? repo.numerodeEstrellas ?? 0) | number }}
+      </span>
+
+      <button class="stat btn-like"
+        [class.liked]="liked()"
+        [class.animating]="likeAnimating()"
+        (click)="toggleLike($event)"
+        [title]="isAuthenticated ? (liked() ? 'Quitar like' : 'Dar like') : 'Inicia sesión para likear'"
+        [disabled]="!isAuthenticated">
+        <span class="stat-icon">{{ liked() ? '❤️' : '🤍' }}</span>
+        <span>{{ likeCount() }}</span>
+      </button>
+
+      <button class="stat btn-fav"
+        [class.favorited]="isFavorited()"
+        (click)="toggleFav($event)"
+        [title]="isAuthenticated ? (isFavorited() ? 'Quitar de favoritos' : 'Añadir a favoritos') : 'Inicia sesión'"
+        [disabled]="!isAuthenticated">
+        <span class="stat-icon">{{ isFavorited() ? '★' : '☆' }}</span>
+      </button>
+
+      <button class="stat btn-save"
+        [class.saved]="isSaved()"
+        (click)="toggleSave($event)"
+        [title]="isAuthenticated ? (isSaved() ? 'Quitar de guardados' : 'Guardar') : 'Inicia sesión'"
+        [disabled]="!isAuthenticated">
+        <i class="bi" [class.bi-bookmark-fill]="isSaved()" [class.bi-bookmark]="!isSaved()"></i>
+      </button>
+
+      <button class="stat btn-comments" (click)="toggleComments($event)" title="Ver comentarios">
+        <span class="stat-icon">💬</span>
+      </button>
+    </div>
+
+    <!-- Enlace GitHub siempre visible -->
+    <a class="repo-card__github-btn"
+       [href]="repo.url ?? repo.urlRepos"
+       target="_blank" rel="noopener"
+       (click)="$event.stopPropagation(); onVerEnGithub()"
+       title="Ver repositorio en GitHub">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0 0 24 12c0-6.63-5.37-12-12-12z"/>
+      </svg>
+      Ver en GitHub
+      <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="margin-left:3px">
+        <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/>
+        <polyline points="15,3 21,3 21,9"/><line x1="10" y1="14" x2="21" y2="3"/>
+      </svg>
+    </a>
+
+    @if (!isAuthenticated) {
+      <p class="repo-card__cta">
+        <a routerLink="/">Inicia sesión</a> para comentar y dar likes
+      </p>
+    }
+  </div>
+
+  @if (showComments()) {
+    <div class="repo-card__comments-panel">
+      <app-comments-section [repoId]="repoId" [isAuthenticated]="isAuthenticated" />
+    </div>
+  }
+
+</div>

@@ -1,0 +1,70 @@
+<div class="public-repos">
+
+  <div class="public-repos__header">
+    <h2 class="public-repos__title">
+      Repositorios más populares
+      <span class="public-repos__badge">⭐ Top Global</span>
+    </h2>
+    <p class="public-repos__sub">Los proyectos open source más destacados del mundo</p>
+  </div>
+
+  <!-- Skeleton mientras carga -->
+  @if (loading() && repos().length === 0) {
+    <div class="public-repos__skeleton">
+      @for (i of [1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+        <div class="skeleton-card">
+          <div class="skeleton-thumb"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line skeleton-line--w60"></div>
+            <div class="skeleton-line skeleton-line--w40"></div>
+            <div class="skeleton-line skeleton-line--w80"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Grid de 15 repositorios + paywall -->
+  @if (repos().length > 0) {
+    <div class="public-repos__grid">
+      @for (repo of repos(); track repo.id) {
+        <app-repo-card [repo]="repo" [isAuthenticated]="false" />
+      }
+    </div>
+
+    <!-- ── PAYWALL GATE ── -->
+    <div class="paywall-gate">
+      <!-- Tarjetas fantasma difuminadas -->
+      <div class="paywall-gate__ghost-row">
+        @for (i of [1,2,3]; track i) {
+          <div class="skeleton-card paywall-ghost">
+            <div class="skeleton-thumb"></div>
+            <div class="skeleton-body">
+              <div class="skeleton-line skeleton-line--w60"></div>
+              <div class="skeleton-line skeleton-line--w40"></div>
+              <div class="skeleton-line skeleton-line--w80"></div>
+            </div>
+          </div>
+        }
+      </div>
+
+      <!-- Overlay con CTA -->
+      <div class="paywall-gate__overlay">
+        <div class="paywall-gate__lock">🔒</div>
+        <h3 class="paywall-gate__title">¿Quieres explorar más?</h3>
+        <p class="paywall-gate__desc">
+          Regístrate o inicia sesión para acceder a la base de datos completa de repositorios
+        </p>
+        <div class="paywall-gate__actions">
+          <button class="btn-red paywall-gate__btn-primary" (click)="abrirRegistro()">
+            Crear cuenta gratis
+          </button>
+          <button class="btn-ghost paywall-gate__btn-secondary" (click)="abrirLogin()">
+            Iniciar sesión
+          </button>
+        </div>
+      </div>
+    </div>
+  }
+
+</div>

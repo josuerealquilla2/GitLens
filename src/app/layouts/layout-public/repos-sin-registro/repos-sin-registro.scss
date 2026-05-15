@@ -1,0 +1,137 @@
+.public-repos {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 24px 80px;
+
+  &__header {
+    margin-bottom: 28px;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0;
+  }
+
+  &__badge {
+    font-size: 0.72rem;
+    font-weight: 600;
+    background: rgba(79,70,229,0.1);
+    border: 1px solid rgba(79,70,229,0.25);
+    color: var(--red);
+    padding: 3px 10px;
+    border-radius: 20px;
+  }
+
+  &__sub { font-size: 0.84rem; color: var(--text2); margin: 0; width: 100%; }
+
+  &__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  &__skeleton { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+
+  @media (max-width: 480px) {
+    padding: 0 12px 40px;
+    &__title { font-size: 1rem; }
+    &__header { margin-bottom: 18px; }
+    &__grid, &__skeleton { grid-template-columns: 1fr; gap: 10px; }
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+    padding: 0 16px 60px;
+    &__title { font-size: 1.1rem; }
+    &__grid, &__skeleton { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    padding: 0 20px 72px;
+    &__grid, &__skeleton { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1280px) {
+    padding: 0 24px 80px;
+    &__grid, &__skeleton { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  }
+
+  @media (min-width: 1281px) {
+    padding: 0 32px 80px;
+    max-width: 1440px;
+    &__grid, &__skeleton { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+    &__title { font-size: 1.4rem; }
+  }
+}
+
+// ── PAYWALL GATE ──────────────────────────────────────────────────────────────
+.paywall-gate {
+  position: relative;
+  margin-top: -8px;
+  overflow: hidden;
+
+  &__ghost-row {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+    gap: 16px;
+    pointer-events: none;
+
+    @media (max-width: 480px) { grid-template-columns: 1fr; gap: 10px; }
+    @media (min-width: 481px) and (max-width: 767px) { grid-template-columns: repeat(auto-fill, minmax(210px, 1fr)); gap: 12px; }
+    @media (min-width: 768px) and (max-width: 1024px) { grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 14px; }
+    @media (min-width: 1281px) { grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+  }
+
+  &__overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      transparent 0%,
+      color-mix(in srgb, var(--bg) 72%, transparent) 28%,
+      color-mix(in srgb, var(--bg) 97%, transparent) 56%,
+      var(--bg) 100%
+    );
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 40px;
+    text-align: center;
+    padding-inline: 24px;
+  }
+
+  &__lock { font-size: 1.6rem; margin-bottom: 10px; }
+  &__title { font-size: 1.15rem; font-weight: 700; color: var(--text); margin: 0 0 8px; }
+  &__desc { font-size: 0.85rem; color: var(--text2); max-width: 400px; line-height: 1.6; margin: 0 0 20px; }
+
+  &__actions { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
+  &__btn-primary { padding: 11px 26px; font-size: 0.9rem; }
+  &__btn-secondary { padding: 11px 26px; font-size: 0.9rem; }
+}
+
+.paywall-ghost { filter: blur(3px); opacity: 0.35; }
+
+// ── SKELETON ─────────────────────────────────────────────────────────────────
+.skeleton-card { background: var(--surface2); border-radius: 12px; overflow: hidden; border: 1px solid var(--border); }
+.skeleton-thumb {
+  width: 100%; aspect-ratio: 16/9;
+  background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+}
+.skeleton-body { padding: 12px 14px; display: flex; flex-direction: column; gap: 8px; }
+.skeleton-line {
+  height: 10px; border-radius: 4px;
+  background: linear-gradient(90deg, var(--surface2) 25%, var(--surface3) 50%, var(--surface2) 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s infinite;
+  &--w60 { width: 60%; }
+  &--w40 { width: 40%; }
+  &--w80 { width: 80%; }
+}
+
+@keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }

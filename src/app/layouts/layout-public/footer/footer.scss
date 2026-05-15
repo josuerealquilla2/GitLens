@@ -1,0 +1,93 @@
+.footer {
+  background: var(--surface2);
+  border-top: 1px solid var(--border);
+  margin-top: 80px;
+
+  &__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 60px 24px 40px;
+    display: grid;
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: 48px;
+
+    @media (max-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+    }
+
+    @media (max-width: 560px) {
+      grid-template-columns: 1fr;
+      padding: 40px 20px 30px;
+      gap: 28px;
+    }
+  }
+
+  &__brand { display: flex; flex-direction: column; gap: 16px; }
+
+  &__logo { display: flex; align-items: center; gap: 8px; }
+  &__logo-icon { font-size: 1.5rem; color: var(--red); }
+  &__logo-text { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+
+  &__tagline { font-size: 0.84rem; color: var(--text2); line-height: 1.6; margin: 0; }
+
+  &__social { display: flex; gap: 10px; }
+  &__social-link {
+    width: 36px;
+    height: 36px;
+    background: var(--surface3);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    color: var(--text3);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s, border-color 0.2s;
+
+    &:hover { background: var(--red); color: #fff; border-color: var(--red); }
+  }
+
+  &__links-group { display: contents; }
+
+  &__col { display: flex; flex-direction: column; gap: 12px; }
+
+  &__col-title {
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--text);
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    margin: 0;
+  }
+
+  &__list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 8px; }
+
+  &__link {
+    font-size: 0.85rem;
+    color: var(--text2);
+    text-decoration: none;
+    transition: color 0.2s;
+
+    &:hover { color: var(--red); }
+  }
+
+  &__bottom {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 20px 24px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 8px;
+    font-size: 0.78rem;
+    color: var(--text3);
+
+    @media (max-width: 560px) {
+      flex-direction: column;
+      text-align: center;
+      padding: 16px 20px;
+    }
+  }
+}

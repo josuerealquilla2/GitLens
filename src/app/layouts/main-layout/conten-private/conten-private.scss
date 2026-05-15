@@ -1,0 +1,34 @@
+.private-layout {
+  margin-left: 220px;
+  margin-top: 64px;
+  min-height: calc(100vh - 64px);
+  background: var(--bg, #0f0f0f);
+
+  // ── Mobile base (≤480px) ──
+  @media (max-width: 480px) {
+    margin-left: 0;
+    margin-top: 60px;
+    min-height: calc(100vh - 60px);
+  }
+
+  // ── 481–767px (tablets horizontales / móviles grandes) ──
+  @media (min-width: 481px) and (max-width: 767px) {
+    margin-left: 0;
+    margin-top: 64px;
+  }
+
+  // ── 768–1024px (tablets / iPads verticales) ──
+  @media (min-width: 768px) and (max-width: 1024px) {
+    margin-left: 200px;
+  }
+
+  // ── 1025–1280px (laptops / escritorios pequeños) ──
+  @media (min-width: 1025px) and (max-width: 1280px) {
+    margin-left: 220px;
+  }
+
+  // ── 1281px+ (monitores de alta resolución) ──
+  @media (min-width: 1281px) {
+    margin-left: 240px;
+  }
+}

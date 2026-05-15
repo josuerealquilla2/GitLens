@@ -1,0 +1,28 @@
+<div class="coleccion">
+  <div class="coleccion__header">
+    <h2 class="coleccion__title">
+      <i class="bi bi-clock-history" style="color:#a78bfa"></i> Historial
+    </h2>
+    <p class="coleccion__sub">Los últimos 50 repositorios que visitaste</p>
+  </div>
+
+  @if (loading()) {
+    <div class="coleccion__loading"><div class="spinner"></div></div>
+  }
+
+  @if (!loading() && repos().length === 0) {
+    <div class="coleccion__empty">
+      <i class="bi bi-clock-history"></i>
+      <p>Tu historial está vacío.</p>
+      <small>Los repositorios que visites aparecerán aquí.</small>
+    </div>
+  }
+
+  @if (repos().length > 0) {
+    <div class="coleccion__grid">
+      @for (repo of repos(); track repo.id) {
+        <app-repo-card [repo]="repo" [isAuthenticated]="true" />
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,51 @@
+<div class="seccion">
+  <div class="seccion__header">
+    <h2 class="seccion__title">
+      <i class="bi bi-fire"></i> Tendencias
+      <span class="seccion__badge">🔥 Últimos 30 días</span>
+    </h2>
+    <p class="seccion__sub">Proyectos que están ganando estrellas rápidamente</p>
+
+    <div class="seccion__filters">
+      @for (lang of lenguajes; track lang) {
+        <button class="filter-pill" [class.active]="lenguaje === lang" (click)="filtrar(lang)">
+          {{ lang || 'Todos' }}
+        </button>
+      }
+    </div>
+  </div>
+
+  @if (loading() && repos().length === 0) {
+    <div class="seccion__skeleton">
+      @for (i of [1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+        <div class="skeleton-card">
+          <div class="skeleton-thumb"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line skeleton-line--w60"></div>
+            <div class="skeleton-line skeleton-line--w40"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  @if (repos().length > 0) {
+    <div class="seccion__grid">
+      @for (repo of repos(); track repo.id) {
+        <app-repo-card [repo]="repo" [isAuthenticated]="true" />
+      }
+    </div>
+    <div class="seccion__more">
+      <button class="btn-load-more" (click)="cargarMas()" [disabled]="loading()">
+        @if (loading()) { Cargando... } @else { Ver más }
+      </button>
+    </div>
+  }
+
+  @if (!loading() && repos().length === 0) {
+    <div class="seccion__empty">
+      <i class="bi bi-emoji-neutral"></i>
+      <p>No se encontraron tendencias para este filtro.</p>
+    </div>
+  }
+</div>

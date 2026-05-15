@@ -1,0 +1,175 @@
+<div class="perfil">
+
+  @if (cargando()) {
+    <div class="perfil__loading"><div class="spinner"></div></div>
+  }
+
+  @if (!cargando()) {
+
+    <!-- Banner de éxito -->
+    @if (exito()) {
+      <div class="perfil__success-banner">
+        <i class="bi bi-check-circle-fill"></i> Perfil actualizado correctamente.
+      </div>
+    }
+
+    <!-- Cabecera de perfil -->
+    <div class="perfil__header">
+      <div class="perfil__cover">
+        @if (editando()) {
+          <div class="perfil__cover-hint">Haz clic en tu avatar para cambiar la foto</div>
+        }
+      </div>
+
+      <div class="perfil__header-body">
+
+        <!-- Avatar clicable -->
+        <div class="perfil__avatar" [class.perfil__avatar--editable]="true" (click)="onAvatarClick()" title="Cambiar foto de perfil">
+          @if (avatarPreview()) {
+            <img [src]="avatarPreview()" alt="Avatar" class="perfil__avatar-img">
+          } @else {
+            <span>{{ iniciales() }}</span>
+          }
+          <div class="perfil__avatar-overlay">
+            <i class="bi bi-camera-fill"></i>
+          </div>
+        </div>
+
+        <!-- Input oculto para seleccionar imagen -->
+        <input #fileInput type="file" accept="image/jpeg,image/png,image/gif,image/webp"
+          style="display:none" (change)="onFileChange($event)">
+
+        <div class="perfil__header-info">
+          <h1 class="perfil__name">{{ user.nombre }} {{ user.apellidos }}</h1>
+          <p class="perfil__email">{{ user.email }}</p>
+          @if (perfil()?.location && !editando()) {
+            <span class="perfil__meta-item">
+              <i class="bi bi-geo-alt"></i> {{ perfil().location }}
+            </span>
+          }
+          @if (perfil()?.website && !editando()) {
+            <a class="perfil__meta-item perfil__meta-item--link" [href]="perfil().website" target="_blank" rel="noopener">
+              <i class="bi bi-link-45deg"></i> {{ perfil().website }}
+            </a>
+          }
+          @if (fechaDesde()) {
+            <span class="perfil__meta-item">
+              <i class="bi bi-calendar3"></i> Miembro desde {{ fechaDesde() }}
+            </span>
+          }
+        </div>
+
+        <button class="perfil__edit-btn" (click)="editando() ? cancelar() : editando.set(true)">
+          @if (editando()) { <i class="bi bi-x-lg"></i> Cancelar }
+          @else { <i class="bi bi-pencil"></i> Editar perfil }
+        </button>
+
+      </div>
+    </div>
+
+    <!-- Bio visible (fuera de edición) -->
+    @if (perfil()?.bio && !editando()) {
+      <div class="perfil__section">
+        <h3 class="perfil__section-title">Sobre mí</h3>
+        <p class="perfil__bio">{{ perfil().bio }}</p>
+      </div>
+    }
+
+    <!-- Formulario de edición -->
+    @if (editando()) {
+      <div class="perfil__section perfil__section--edit">
+        <h3 class="perfil__section-title"><i class="bi bi-pencil-square"></i> Editar información</h3>
+
+        <!-- Preview de imagen seleccionada (si hay una nueva) -->
+        @if (selectedFile) {
+          <div class="perfil__img-preview-row">
+            <img [src]="avatarPreview()!" alt="Nueva foto" class="perfil__img-preview-thumb">
+            <div class="perfil__img-preview-info">
+              <span class="perfil__img-name">{{ selectedFile.name }}</span>
+              <span class="perfil__img-hint">La foto se guardará al hacer clic en "Guardar cambios"</span>
+            </div>
+            <button class="perfil__img-remove" (click)="selectedFile = null; avatarPreview.set(perfil()?.image ?? null)" title="Quitar">
+              <i class="bi bi-x-lg"></i>
+            </button>
+          </div>
+        }
+
+        <form class="perfil__form" [formGroup]="form" (ngSubmit)="guardar()">
+
+          <div class="pf-field">
+            <label class="pf-field__label">Sobre mí</label>
+            <textarea class="pf-field__input pf-field__input--textarea"
+              formControlName="bio"
+              placeholder="Cuéntanos sobre ti: tus tecnologías favoritas, proyectos, intereses..."
+              rows="4"></textarea>
+          </div>
+
+          <div class="perfil__form-row">
+            <div class="pf-field">
+              <label class="pf-field__label"><i class="bi bi-geo-alt"></i> Ubicación</label>
+              <input class="pf-field__input" type="text" formControlName="location" placeholder="Madrid, España">
+            </div>
+            <div class="pf-field">
+              <label class="pf-field__label"><i class="bi bi-link-45deg"></i> Sitio web</label>
+              <input class="pf-field__input" type="url" formControlName="website" placeholder="https://tuwebsite.com">
+            </div>
+          </div>
+
+          <div class="perfil__form-actions">
+            <button type="button" class="btn-cambiar-foto" (click)="fileInput.click()">
+              <i class="bi bi-image"></i> Cambiar foto
+            </button>
+            <button type="submit" class="btn-guardar" [disabled]="guardando()">
+              @if (guardando()) { <span class="btn-spinner"></span> Guardando... }
+              @else { <i class="bi bi-check2"></i> Guardar cambios }
+            </button>
+          </div>
+
+        </form>
+      </div>
+    }
+
+    <!-- Amigos -->
+    <div class="perfil__section">
+      <h3 class="perfil__section-title">Conexiones</h3>
+      <div class="perfil__stats">
+        <div class="perfil__stat">
+          <i class="bi bi-people-fill" style="color:#5ca8ff"></i>
+          <span class="perfil__stat-value">{{ friendCount() }}</span>
+          <span class="perfil__stat-label">Amigos</span>
+        </div>
+        @if (pendingCount() > 0) {
+          <div class="perfil__stat">
+            <i class="bi bi-person-plus-fill" style="color:#ffd700"></i>
+            <span class="perfil__stat-value">{{ pendingCount() }}</span>
+            <span class="perfil__stat-label">Solicitudes pendientes</span>
+          </div>
+        }
+      </div>
+    </div>
+
+    <!-- Actividad -->
+    <div class="perfil__section">
+      <h3 class="perfil__section-title">Tu actividad en GitLens</h3>
+      <div class="perfil__stats">
+        <div class="perfil__stat">
+          <i class="bi bi-star-fill" style="color:#ffd700"></i>
+          <span class="perfil__stat-label">Favoritos</span>
+          <span class="perfil__stat-note">Repos marcados como favoritos</span>
+        </div>
+        <div class="perfil__stat">
+          <i class="bi bi-journal-code" style="color:#5ca8ff"></i>
+          <span class="perfil__stat-label">Guardados</span>
+          <span class="perfil__stat-note">Repos guardados para leer</span>
+        </div>
+        <div class="perfil__stat">
+          <i class="bi bi-clock-history" style="color:#a78bfa"></i>
+          <span class="perfil__stat-label">Historial</span>
+          <span class="perfil__stat-note">Repos que has visitado</span>
+        </div>
+      </div>
+    </div>
+
+  }
+
+</div>

@@ -1,0 +1,30 @@
+<app-header-privado></app-header-privado>
+
+<div class="private-layout">
+  @switch (navService.activeSection()) {
+    @case ('inicio') {
+      <app-repositorios-por-lenguaje />
+    }
+    @case ('tendencias') {
+      <app-seccion-tendencias />
+    }
+    @case ('repositorios') {
+      <app-seccion-guardados />
+    }
+    @case ('historial') {
+      <app-seccion-historial />
+    }
+    @case ('favoritos') {
+      <app-seccion-favoritos />
+    }
+    @case ('perfil') {
+      <app-profile />
+    }
+    @case ('amigos') {
+      <app-seccion-amigos />
+    }
+    @case ('chat') {
+      <app-seccion-chat />
+    }
+  }
+</div>

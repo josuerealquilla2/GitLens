@@ -1,0 +1,53 @@
+.coleccion {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 24px 24px 80px;
+
+  &__header { margin-bottom: 28px; }
+
+  &__title {
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--text);
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 0 0 6px;
+  }
+
+  &__sub { font-size: 0.84rem; color: var(--text2); margin: 0; }
+
+  &__grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+  &__loading { display: flex; justify-content: center; padding: 80px 0; }
+
+  &__empty {
+    text-align: center;
+    padding: 80px 0;
+    color: var(--text3);
+    i { font-size: 2.5rem; display: block; margin-bottom: 12px; }
+    p { font-size: 0.95rem; margin: 0 0 6px; color: var(--text2); }
+    small { font-size: 0.8rem; color: var(--text3); }
+  }
+
+  @media (max-width: 768px) {
+    padding: 20px 16px 60px;
+    &__title { font-size: 1.1rem; }
+    &__grid { grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+    &__empty { padding: 50px 0; }
+  }
+
+  @media (max-width: 480px) {
+    padding: 16px 12px 40px;
+    &__grid { grid-template-columns: 1fr; gap: 10px; }
+  }
+}
+
+.spinner {
+  width: 32px; height: 32px;
+  border: 3px solid var(--border);
+  border-top-color: var(--red);
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin { to { transform: rotate(360deg); } }

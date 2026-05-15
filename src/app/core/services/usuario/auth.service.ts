@@ -13,10 +13,10 @@ export class AuthService {
   }
 
   registro(datos:any):Observable<any>{
-    return this.http.post<any>(`${this.URL}/users/register/`,datos)
+    return this.http.post<any>(`${this.URL}users/register/`,datos)
   }
   login(datos:any):Observable<any>{
-    return this.http.post<any>(`${this.URL}/users/login/`,datos)
+    return this.http.post<any>(`${this.URL}users/login/`,datos)
   }
 
 

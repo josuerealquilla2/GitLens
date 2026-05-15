@@ -1,0 +1,310 @@
+.repo-card {
+  background: #212121;
+  border-radius: 12px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #2e2e2e;
+  cursor: pointer;
+
+  &:hover {
+    transform: scale(1.03);
+    border-color: #444;
+  }
+
+  // ── Thumbnail ──
+  &__thumb {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+    background: #0f0f0f;
+
+    img { width: 100%; height: 100%; object-fit: cover; }
+  }
+
+  &__thumb-placeholder {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  // ── Carrusel ──
+  .carousel {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+
+    &__img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+      display: block;
+    }
+
+    // Flechas prev/next
+    &__btn {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(0,0,0,0.55);
+      color: #fff;
+      font-size: 0.85rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      transition: opacity 0.2s, background 0.2s, transform 0.2s;
+      z-index: 10;
+      backdrop-filter: blur(4px);
+
+      &--prev { left: 8px; }
+      &--next { right: 8px; }
+
+      &:hover { background: rgba(0,0,0,0.8); }
+    }
+
+    // Dots indicadores
+    &__dots {
+      position: absolute;
+      bottom: 8px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 5px;
+      z-index: 10;
+    }
+
+    &__dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: rgba(255,255,255,0.45);
+      cursor: pointer;
+      transition: background 0.2s, transform 0.2s;
+
+      &--active {
+        background: #fff;
+        transform: scale(1.3);
+      }
+    }
+  }
+
+  // Mostrar flechas al hacer hover sobre la tarjeta
+  &:hover .carousel__btn {
+    opacity: 1;
+  }
+
+  .lang-badge {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 8px;
+    letter-spacing: 0.5px;
+    cursor: help;
+  }
+
+  .lang-badge-overlay {
+    position: absolute;
+    top: 8px;
+    left: 8px;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: #fff;
+    padding: 3px 8px;
+    border-radius: 6px;
+    letter-spacing: 0.4px;
+    cursor: help;
+    opacity: 0.92;
+  }
+
+  &__edu-tooltip {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: rgba(0,0,0,0.82);
+    color: #e0e0e0;
+    font-size: 0.72rem;
+    padding: 6px 10px;
+    opacity: 0;
+    transform: translateY(4px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    pointer-events: none;
+
+    .edu-icon { margin-right: 4px; }
+  }
+
+  &__thumb:hover &__edu-tooltip { opacity: 1; transform: translateY(0); }
+
+  // ── Body ──
+  &__body {
+    padding: 12px 14px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  &__header { display: flex; align-items: center; gap: 10px; }
+
+  &__avatar {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    object-fit: cover;
+    flex-shrink: 0;
+    border: 1px solid #333;
+  }
+
+  &__meta { overflow: hidden; }
+
+  &__title {
+    margin: 0;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: #f1f1f1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__author { font-size: 0.74rem; color: #aaa; }
+
+  &__desc {
+    font-size: 0.78rem;
+    color: #888;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  // ── Stats ──
+  &__stats {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-top: auto;
+    flex-wrap: wrap;
+  }
+
+  .stat {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    font-size: 0.78rem;
+    color: #aaa;
+
+    .stat-icon { font-size: 0.9rem; }
+  }
+
+  .lang-badge--large {
+    font-size: 2rem;
+    padding: 14px 22px;
+    border-radius: 12px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.5);
+  }
+
+  .btn-like,
+  .btn-comments,
+  .btn-fav,
+  .btn-save {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px 8px;
+    border-radius: 20px;
+    transition: background 0.2s ease, transform 0.15s ease;
+    color: #aaa;
+
+    &:hover { background: #2e2e2e; }
+    &:disabled { cursor: default; opacity: 0.5; }
+  }
+
+  .btn-like.liked { color: #ff4444; }
+  .btn-fav.favorited { color: #ffd700; }
+  .btn-save.saved { color: #4fc3f7; }
+
+  .btn-like.animating { animation: heartbeat 0.35s ease; }
+
+  @keyframes heartbeat {
+    0%   { transform: scale(1); }
+    40%  { transform: scale(1.35); }
+    70%  { transform: scale(0.9); }
+    100% { transform: scale(1); }
+  }
+
+  // ── Botón GitHub siempre visible ──
+  &__github-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+    border-radius: 8px;
+    color: #bbb;
+    font-size: 0.78rem;
+    font-weight: 500;
+    padding: 8px 12px;
+    text-decoration: none;
+    margin-top: 4px;
+    transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+
+    &:hover {
+      background: #2a2a2a;
+      border-color: #555;
+      color: #fff;
+      transform: translateY(-1px);
+    }
+  }
+
+  &__cta {
+    font-size: 0.74rem;
+    color: #666;
+    margin: 0;
+
+    a { color: #ff0000; text-decoration: none; &:hover { text-decoration: underline; } }
+  }
+
+  &__comments-panel {
+    border-top: 1px solid #2e2e2e;
+    background: #1a1a1a;
+    padding: 12px;
+  }
+
+  // ── Responsive ──
+
+  // Mobile base (≤480px)
+  @media (max-width: 480px) {
+    &:hover { transform: none; } // sin hover scale en touch
+    &__body { padding: 10px 12px; gap: 6px; }
+    &__title { font-size: 0.85rem; }
+    &__desc  { font-size: 0.76rem; }
+    &__avatar { width: 28px; height: 28px; }
+    .stat { font-size: 0.74rem; }
+    &__github-btn { font-size: 0.74rem; padding: 6px 10px; }
+  }
+
+  // 1281px+ (alta resolución)
+  @media (min-width: 1281px) {
+    border-radius: 14px;
+    &__body { padding: 14px 16px; gap: 10px; }
+    &__title { font-size: 0.95rem; }
+    &__desc  { font-size: 0.82rem; }
+    &__avatar { width: 38px; height: 38px; }
+    .stat { font-size: 0.82rem; }
+  }
+}

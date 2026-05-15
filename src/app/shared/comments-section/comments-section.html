@@ -1,0 +1,74 @@
+<div class="comments">
+
+  <h6 class="comments__title">Comentarios educativos</h6>
+
+  @if (loading()) {
+    <p class="comments__loading">Cargando...</p>
+  }
+
+  <!-- Lista de comentarios -->
+  <div class="comments__list">
+    @for (comment of comments(); track comment.id) {
+      <div class="comment">
+        <div class="comment__header">
+          <span class="comment__author">{{ comment.autor.nombre }}</span>
+          <span class="comment__time">{{ timeAgo(comment.created_at) }}</span>
+          @if (isAuthenticated && comment.autor.email === currentUserEmail) {
+            <button class="comment__delete" (click)="deleteComment(comment.id)" title="Eliminar mi comentario">✕</button>
+          }
+        </div>
+        <p class="comment__body">{{ comment.body | profanity }}</p>
+
+        @if (isAuthenticated) {
+          <button class="comment__reply-btn" (click)="startReply(comment.id)">Responder</button>
+        }
+
+        <!-- Form respuesta inline -->
+        @if (replyingTo() === comment.id) {
+          <div class="comment__reply-form">
+            <textarea [(ngModel)]="replyBody" placeholder="Tu respuesta..." rows="2"></textarea>
+            <button class="btn-submit" (click)="submitReply(comment.id)">Enviar</button>
+          </div>
+        }
+
+        <!-- Respuestas -->
+        @if (comment.replies?.length > 0) {
+          <div class="comment__replies">
+            @for (reply of comment.replies; track reply.id) {
+              <div class="comment comment--reply">
+                <div class="comment__header">
+                  <span class="comment__author">{{ reply.autor.nombre }}</span>
+                  <span class="comment__time">{{ timeAgo(reply.created_at) }}</span>
+                </div>
+                <p class="comment__body">{{ reply.body | profanity }}</p>
+              </div>
+            }
+          </div>
+        }
+      </div>
+    }
+
+    @if (comments().length === 0 && !loading()) {
+      <p class="comments__empty">Sé el primero en comentar este repositorio 🚀</p>
+    }
+  </div>
+
+  <!-- Input nuevo comentario -->
+  @if (isAuthenticated) {
+    <div class="comments__new">
+      <textarea
+        [(ngModel)]="newBody"
+        placeholder="Escribe un comentario educativo..."
+        rows="2"
+      ></textarea>
+      <button class="btn-submit" (click)="submit()" [disabled]="!newBody.trim()">
+        Publicar
+      </button>
+    </div>
+  } @else {
+    <p class="comments__cta">
+      <a href="/login">Inicia sesión</a> para dejar un comentario educativo
+    </p>
+  }
+
+</div>

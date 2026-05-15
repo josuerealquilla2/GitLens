@@ -1,1 +1,377 @@
-/* You can add global styles to this file, and also import other style files */
+/* ── Poppins local (sin petición externa) ── */
+@font-face { font-family: 'Poppins'; src: url('/fonts/Poppins-Light.ttf')    format('truetype'); font-weight: 300; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('/fonts/Poppins-Regular.ttf')  format('truetype'); font-weight: 400; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('/fonts/Poppins-Medium.ttf')   format('truetype'); font-weight: 500; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('/fonts/Poppins-SemiBold.ttf') format('truetype'); font-weight: 600; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('/fonts/Poppins-Bold.ttf')     format('truetype'); font-weight: 700; font-display: swap; }
+@font-face { font-family: 'Poppins'; src: url('/fonts/Poppins-ExtraBold.ttf')format('truetype'); font-weight: 800; font-display: swap; }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── Tema claro Dribbble (defecto) ── */
+:root, [data-theme='light'] {
+  --bg:        #ffffff;
+  --surface:   #ffffff;
+  --surface2:  #f8f8fb;
+  --surface3:  #f0f0f5;
+  --border:    #e8e8f0;
+  --border2:   #d8d8e8;
+  --text:      #0d0d0d;
+  --text2:     #6e6d7a;
+  --text3:     #a0a0b0;
+  --red:       #4f46e5;
+  --red-dark:  #4338ca;
+  --radius:    12px;
+  --nav-h:     64px;
+  --shadow:    rgba(0,0,0,0.08);
+  --input-bg:  #f4f4f8;
+  --nav-bg:    rgba(255,255,255,0.92);
+  --modal-bg:  #ffffff;
+}
+
+/* ── Tema oscuro ── */
+[data-theme='dark'] {
+  --bg:        #111117;
+  --surface:   #1c1c23;
+  --surface2:  #16161c;
+  --surface3:  #222230;
+  --border:    #2a2a3a;
+  --border2:   #363648;
+  --text:      #f0f0f5;
+  --text2:     #9090a8;
+  --text3:     #555568;
+  --red:       #4f46e5;
+  --red-dark:  #4338ca;
+  --radius:    12px;
+  --nav-h:     64px;
+  --shadow:    rgba(0,0,0,0.55);
+  --input-bg:  #16161c;
+  --nav-bg:    rgba(17,17,23,0.93);
+  --modal-bg:  #1c1c23;
+}
+
+html, body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'Poppins', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  min-height: 100vh;
+  -webkit-font-smoothing: antialiased;
+}
+
+// SweetAlert2 siempre por encima de modales
+.swal2-container { z-index: 99999 !important; }
+.swal2-popup {
+  background: #1a1a1a !important;
+  color: #f1f1f1 !important;
+  border: 1px solid #2e2e2e !important;
+  border-radius: 16px !important;
+  font-family: 'Poppins', sans-serif !important;
+}
+.swal2-title { color: #f1f1f1 !important; font-size: 1.2rem !important; }
+.swal2-html-container, .swal2-content { color: #aaa !important; font-size: 0.9rem !important; }
+.swal2-confirm {
+  background: #4f46e5 !important;
+  border-radius: 8px !important;
+  font-family: 'Poppins', sans-serif !important;
+  font-weight: 600 !important;
+  &:focus { box-shadow: none !important; }
+}
+.swal2-icon.swal2-success { border-color: #22c55e !important;
+  .swal2-success-ring { border-color: rgba(34,197,94,0.3) !important; }
+}
+.swal2-icon.swal2-error { border-color: #ff4444 !important; }
+.swal2-loader { border-color: #4f46e5 transparent #4f46e5 transparent !important; }
+
+a { color: inherit; text-decoration: none; }
+button { font-family: inherit; cursor: pointer; }
+
+/* ── Scrollbar global ── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #333; border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: #555; }
+
+/* ── Transición suave al cambiar tema ── */
+*, *::before, *::after {
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.15s ease;
+}
+
+/* ── Overrides globales modo claro (componentes con colores hardcodeados) ── */
+[data-theme='light'] {
+
+  /* Scrollbar */
+  ::-webkit-scrollbar-thumb { background: #ccc; }
+  ::-webkit-scrollbar-thumb:hover { background: #aaa; }
+
+  /* SweetAlert2 */
+  .swal2-popup {
+    background: #fff !important;
+    color: #111 !important;
+    border-color: #e0e0e0 !important;
+  }
+  .swal2-title { color: #111 !important; }
+  .swal2-html-container, .swal2-content { color: #555 !important; }
+
+  /* ── Sidebar ── */
+  .sidebar {
+    background: #ffffff !important;
+    border-right-color: #e0e0e0 !important;
+  }
+  .sidebar__logo-text { color: #111 !important; }
+  .sidebar__item { color: #444 !important;
+    &:hover, &.active { background: #f0f0f0 !important; color: #111 !important; }
+  }
+  .sidebar__logout { color: #888 !important;
+    &:hover { background: #f0f0f0 !important; color: #111 !important; }
+  }
+  .sidebar-overlay { background: rgba(0,0,0,0.3) !important; }
+
+  /* ── Topbar ── */
+  .topbar {
+    background: #ffffff !important;
+    border-bottom-color: #e0e0e0 !important;
+    box-shadow: 0 1px 0 #e0e0e0 !important;
+  }
+  .topbar__search-input {
+    background: #f5f5f5 !important;
+    border-color: #e0e0e0 !important;
+    color: #111 !important;
+    &::placeholder { color: #999 !important; }
+    &:focus { border-color: #4f46e5 !important; }
+  }
+  .topbar__search-btn { background: #4f46e5 !important; }
+  .lang-pill {
+    background: #f0f0f0 !important;
+    color: #333 !important;
+    border-color: #e0e0e0 !important;
+    &:hover { background: #e0e0e0 !important; }
+  }
+  .lang-dropdown {
+    background: #fff !important;
+    border-color: #e0e0e0 !important;
+    box-shadow: 0 8px 24px rgba(0,0,0,0.12) !important;
+    li { color: #333 !important;
+      &:hover { background: #f5f5f5 !important; }
+    }
+  }
+
+  /* ── Navbar pública ── */
+  .navbar {
+    background: #ffffff !important;
+    border-bottom-color: #e0e0e0 !important;
+  }
+  .navbar__link, .navbar__brand-text { color: #111 !important; }
+  .navbar__mobile-menu { background: #fff !important; border-top-color: #e0e0e0 !important; }
+  .navbar__mobile-link { color: #333 !important; }
+  .btn-ghost {
+    color: #333 !important;
+    border-color: #d0d0d0 !important;
+    &:hover { background: #f0f0f0 !important; }
+  }
+
+  /* ── Repo cards ── */
+  .repo-card {
+    background: #ffffff !important;
+    border-color: #e0e0e0 !important;
+    &:hover { border-color: #ccc !important; box-shadow: 0 4px 20px rgba(0,0,0,0.08) !important; }
+  }
+
+  /* ── Conten principal (hero) ── */
+  .hero { background: #f2f2f2 !important; }
+  .lang-card { background: #ffffff !important; border-color: #e0e0e0 !important; color: #333 !important; }
+
+  /* ── Secciones: historial, favoritos, guardados, tendencias ── */
+  .seccion-historial, .seccion-guardados, .seccion-favoritos,
+  .seccion-colecciones, .seccion-tendencias { background: transparent !important; }
+
+  /* ── Profile ── */
+  .perfil__header { background: #ffffff !important; border-color: #e0e0e0 !important; }
+  .perfil__cover { background: linear-gradient(135deg, #ede9fe 0%, #ddd6fe 50%, #f8f8fb 100%) !important; }
+  .perfil__section { background: transparent !important; }
+  .perfil__stat { background: #ffffff !important; border-color: #e0e0e0 !important; }
+  .perfil__form .pf-field__input {
+    background: #f5f5f5 !important;
+    border-color: #e0e0e0 !important;
+    color: #111 !important;
+  }
+  .btn-guardar { background: #4f46e5 !important; }
+
+  /* ── Chat ── */
+  .chat-layout { background: #f2f2f2 !important; }
+  .chat-sidebar {
+    background: #ffffff !important;
+    border-right-color: #e0e0e0 !important;
+  }
+  .chat-sidebar__item { color: #333 !important;
+    &:hover { background: #f5f5f5 !important; }
+    &.active { background: #ede9fe !important; }
+  }
+  .chat-room { background: #f8f8f8 !important; }
+  .chat-room__header { border-bottom-color: #e0e0e0 !important; }
+  .chat-room__input-bar { border-top-color: #e0e0e0 !important; }
+  .chat-room__textarea {
+    background: #f0f0f0 !important;
+    border-color: #e0e0e0 !important;
+    color: #111 !important;
+  }
+  .msg__bubble {
+    background: #ffffff !important;
+    border-color: #e0e0e0 !important;
+    color: #111 !important;
+  }
+  .msg--mine .msg__bubble { background: #4f46e5 !important; color: #fff !important; border-color: transparent !important; }
+
+  /* ── Amigos ── */
+  .user-card {
+    background: #ffffff !important;
+    border-color: #e0e0e0 !important;
+    &:hover { border-color: #ccc !important; }
+  }
+  .user-card__name { color: #111 !important; }
+  .user-card__email { color: #777 !important; }
+  .amigos__input-wrap {
+    background: #f5f5f5 !important;
+    border-color: #e0e0e0 !important;
+  }
+  .amigos__input { color: #111 !important; }
+  .amigos__dropdown {
+    background: #ffffff !important;
+    border-color: #e0e0e0 !important;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.1) !important;
+  }
+  .amigos__suggestion:hover { background: #f5f5f5 !important; }
+  .sug-name { color: #111 !important; }
+
+  /* ── Modales (login, register, chat) ── */
+  .modal {
+    background: #ffffff !important;
+    border-color: #e0e0e0 !important;
+  }
+  .modal__title, .modal__friend { color: #111 !important; }
+  .modal__friend:hover { background: #f5f5f5 !important; }
+  .modal__friend.selected { background: #ede9fe !important; }
+  .modal__input {
+    background: #f5f5f5 !important;
+    border-color: #e0e0e0 !important;
+    color: #111 !important;
+  }
+  .modal__cancel {
+    border-color: #d0d0d0 !important;
+    color: #555 !important;
+    &:hover { background: #f5f5f5 !important; }
+  }
+
+  /* ── Repo card — textos hardcodeados ── */
+  .repo-card {
+    background: #ffffff !important;
+    border-color: #e0e0e0 !important;
+  }
+  .repo-card__title   { color: #111111 !important; }
+  .repo-card__author  { color: #555555 !important; }
+  .repo-card__desc    { color: #666666 !important; }
+  .repo-card__thumb   { background: #f0f0f0 !important; }
+  .repo-card__avatar  { border-color: #e0e0e0 !important; }
+  .repo-card__github-btn {
+    background: #f5f5f5 !important;
+    border-color: #e0e0e0 !important;
+    color: #333333 !important;
+    &:hover { background: #e8e8e8 !important; border-color: #ccc !important; color: #111 !important; }
+  }
+  .repo-card__comments-panel {
+    background: #f5f5f5 !important;
+    border-top-color: #e0e0e0 !important;
+  }
+  .repo-card__cta { color: #888 !important; }
+  .stat { color: #666666 !important; }
+  .btn-like, .btn-comments {
+    color: #555555 !important;
+    &:hover { background: #eeeeee !important; }
+  }
+  .btn-like.liked { color: #4f46e5 !important; }
+
+  /* ── Topbar search (textos hardcodeados) ── */
+  .topbar__search {
+    background: #f0f0f0 !important;
+    border-color: #ddd !important;
+  }
+  .topbar__search-input {
+    color: #111 !important;
+    &::placeholder { color: #999 !important; }
+  }
+  .topbar__search-btn { color: #555 !important; }
+  .topbar__hamburger span { background: #555 !important; }
+
+  /* ── Sidebar items hardcodeados ── */
+  .sidebar__item i, .sidebar__item span { color: inherit !important; }
+  .sidebar__logout { background: transparent !important; }
+
+  /* ── Secciones: titles y textos generales ── */
+  h1, h2, h3, h4, h5, h6 { color: var(--text) !important; }
+  p { color: var(--text2); }
+
+  /* ── Sections (historial, guardados, favoritos, tendencias) ── */
+  [class*="seccion-"] h2,
+  [class*="seccion-"] h3,
+  [class*="seccion-"] p { color: var(--text) !important; }
+
+  /* ── Login / Register modales ── */
+  .login, .register,
+  .login__container, .register__container {
+    background: #ffffff !important;
+    border-color: #e0e0e0 !important;
+    color: #111 !important;
+  }
+  input[type="text"], input[type="email"], input[type="password"], textarea {
+    background: var(--input-bg) !important;
+    border-color: var(--border) !important;
+    color: var(--text) !important;
+    &::placeholder { color: var(--text3) !important; }
+  }
+
+  /* ── Chat sidebar header/title ── */
+  .chat-sidebar__title    { color: #111 !important; }
+  .chat-sidebar__name     { color: #111 !important; }
+  .chat-sidebar__last     { color: #888 !important; }
+  .chat-room__title       { color: #111 !important; }
+  .chat-room__sub         { color: #888 !important; }
+  .chat-room__empty       { color: #888 !important; }
+  .msg__sender            { color: #888 !important; }
+  .msg__time              { color: #aaa !important; }
+
+  /* ── Profile textos ── */
+  .perfil__name           { color: #111 !important; }
+  .perfil__email          { color: #555 !important; }
+  .perfil__meta-item      { color: #666 !important; }
+  .perfil__bio            { color: #444 !important; }
+  .perfil__section-title  { color: #111 !important; }
+  .perfil__stat-value     { color: #111 !important; }
+  .perfil__stat-label     { color: #333 !important; }
+  .perfil__stat-note      { color: #888 !important; }
+  label, .pf-field__label { color: #333 !important; }
+
+  /* ── Amigos ── */
+  .amigos__tab   { color: #666 !important; &.active { color: #111 !important; } }
+  .amigos__empty { color: #888 !important; }
+  .sug-email     { color: #888 !important; }
+}
+
+/* ── Bootstrap override ── */
+.card { background: var(--surface) !important; border-color: var(--border) !important; color: var(--text) !important; }
+.btn-primary { background: var(--red) !important; border-color: var(--red) !important; }
+.btn-primary:hover { background: var(--red-dark) !important; border-color: var(--red-dark) !important; }
+.form-control, .form-select {
+  background: var(--surface2) !important;
+  border-color: var(--border2) !important;
+  color: var(--text) !important;
+  &::placeholder { color: var(--text3) !important; }
+  &:focus { border-color: var(--red) !important; box-shadow: 0 0 0 3px rgba(79,70,229,0.18) !important; }
+}
+.dropdown-menu {
+  background: var(--surface) !important;
+  border-color: var(--border) !important;
+  .dropdown-item { color: var(--text2) !important;
+    &:hover { background: var(--surface2) !important; color: var(--text) !important; }
+  }
+}

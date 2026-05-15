@@ -1,0 +1,55 @@
+<nav class="navbar">
+  <div class="navbar__inner">
+
+    <a class="navbar__brand" href="/">
+      <span class="navbar__brand-icon">⬡</span>
+      <span class="navbar__brand-text">GitLens</span>
+      <span class="navbar__brand-badge">BETA</span>
+    </a>
+
+    <ul class="navbar__links" [class.open]="menuOpen()">
+      <li><a class="navbar__link" href="#explorar">Explorar repos</a></li>
+      <li><a class="navbar__link" href="#sobre-nosotros">Sobre nosotros</a></li>
+    </ul>
+
+    <div class="navbar__tagline">
+      <span>200M+ repositorios · 20 lenguajes</span>
+    </div>
+
+
+    <div class="navbar__auth">
+      <button class="btn-theme" (click)="theme.toggle()" [title]="theme.theme() === 'dark' ? 'Modo claro' : 'Modo oscuro'">
+        @if (theme.theme() === 'dark') {
+          <i class="bi bi-sun-fill"></i>
+        } @else {
+          <i class="bi bi-moon-fill"></i>
+        }
+      </button>
+      <button class="btn-ghost" (click)="toogleLogin()">Iniciar sesión</button>
+      <button class="btn-red" (click)="toggleRegister()">Crear cuenta</button>
+    </div>
+
+    <button class="navbar__hamburger" (click)="toggleMenu()" [class.open]="menuOpen()" aria-label="Menú">
+      <span></span><span></span><span></span>
+    </button>
+
+  </div>
+
+  <!-- Mobile dropdown menu -->
+  <div class="navbar__mobile-menu" [class.open]="menuOpen()">
+    <a class="navbar__mobile-link" href="#sobre-nosotros" (click)="menuOpen.set(false)">Sobre nosotros</a>
+    <a class="navbar__mobile-link" href="#explorar" (click)="menuOpen.set(false)">Explorar</a>
+
+    <div class="navbar__mobile-auth">
+      <button class="btn-ghost" (click)="toogleLogin()">Iniciar sesión</button>
+      <button class="btn-red" (click)="toggleRegister()">Crear cuenta</button>
+    </div>
+  </div>
+</nav>
+
+@if (openLogin()) {
+  <app-login (fnToggleLoginHeader)="toogleLogin()"></app-login>
+}
+@if (openRegister()) {
+  <app-register (fnToggleRegisterHeader)="toggleRegister()"></app-register>
+}

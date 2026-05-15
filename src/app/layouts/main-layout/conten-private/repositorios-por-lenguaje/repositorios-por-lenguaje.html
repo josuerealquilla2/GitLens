@@ -1,0 +1,64 @@
+<div class="repos-layout">
+
+  <!-- Encabezado dinámico -->
+  <div class="repos-header">
+    @if (modo === 'popular') {
+      <h2 class="repos-header__title">
+        🔥 Repositorios populares
+        <span class="repos-header__badge">Top Global</span>
+      </h2>
+      <p class="repos-header__sub">Los proyectos open source más destacados del mundo</p>
+    }
+    @if (modo === 'lenguaje') {
+      <h2 class="repos-header__title">
+        Repositorios de <span class="repos-header__lang">{{ lenguajeActual }}</span>
+      </h2>
+      <p class="repos-header__sub">Ordenados por número de estrellas</p>
+    }
+    @if (modo === 'busqueda') {
+      <h2 class="repos-header__title">
+        Resultados para: <span class="repos-header__lang">{{ busquedaActual }}</span>
+      </h2>
+    }
+  </div>
+
+  <!-- Skeleton loader -->
+  @if (loading()) {
+    <div class="repos-skeleton">
+      @for (i of [1,2,3,4,5,6,7,8,9,10,11,12]; track i) {
+        <div class="skeleton-card">
+          <div class="skeleton-thumb"></div>
+          <div class="skeleton-body">
+            <div class="skeleton-line skeleton-line--w60"></div>
+            <div class="skeleton-line skeleton-line--w40"></div>
+          </div>
+        </div>
+      }
+    </div>
+  }
+
+  <!-- Sin resultados -->
+  @if (!loading() && repos.length === 0) {
+    <div class="empty-state">
+      <div class="empty-state__icon">😕</div>
+      <p>No se encontraron repositorios.</p>
+      <small>Intenta con otro lenguaje o término de búsqueda.</small>
+    </div>
+  }
+
+  <!-- Grid de repos -->
+  @if (!loading() && repos.length > 0) {
+    <div class="repos-grid">
+      @for (repo of repos; track repo.id) {
+        <app-repo-card [repo]="repo" [isAuthenticated]="isAuthenticated" />
+      }
+    </div>
+
+    <div class="pagination">
+      <button class="btn-pill" (click)="anterior()" [disabled]="page === 1">⬅ Anterior</button>
+      <span class="page-num">Página {{ page }}</span>
+      <button class="btn-pill" (click)="siguiente()" [disabled]="loading()">Siguiente ➡</button>
+    </div>
+  }
+
+</div>

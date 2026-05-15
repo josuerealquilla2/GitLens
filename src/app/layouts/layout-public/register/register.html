@@ -1,0 +1,106 @@
+<div class="modal-overlay" (click)="fnToggleRegisterHeader.emit()">
+  <div class="modal-box" (click)="$event.stopPropagation()">
+
+    <div class="modal-box__header">
+      <div class="modal-box__logo">⬡</div>
+      <h3 class="modal-box__title">Crea tu cuenta</h3>
+      <p class="modal-box__sub">Únete a la comunidad de GitLens</p>
+      <button class="modal-box__close" (click)="fnToggleRegisterHeader.emit()" aria-label="Cerrar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M18 6 6 18M6 6l12 12"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Estado: registro exitoso -->
+    @if (registroExitoso()) {
+      <div class="success-state">
+        <div class="success-state__icon">✅</div>
+        <h4>¡Cuenta creada!</h4>
+        <p>Tu cuenta ha sido creada correctamente. Ya puedes iniciar sesión.</p>
+        <button class="btn-submit" (click)="fnToggleRegisterHeader.emit()">
+          Ir a iniciar sesión
+        </button>
+      </div>
+    }
+
+    <!-- Estado: formulario -->
+    @if (!registroExitoso()) {
+
+      @if (errorMsg()) {
+        <div class="form-error-banner">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+            <circle cx="12" cy="12" r="10"/><path d="M12 8v4m0 4h.01"/>
+          </svg>
+          {{ errorMsg() }}
+        </div>
+      }
+
+      <form class="modal-box__form" [formGroup]="registerForm" (ngSubmit)="registrame()">
+
+        <div class="field-row">
+          <div class="field">
+            <label class="field__label" for="nombre">Nombre</label>
+            <input id="nombre" type="text" class="field__input" placeholder="Juan" formControlName="nombre">
+            @if (registerForm.get('nombre')?.touched && registerForm.get('nombre')?.errors?.['required']) {
+              <span class="field__error">Obligatorio</span>
+            }
+          </div>
+          <div class="field">
+            <label class="field__label" for="apellidos">Apellidos</label>
+            <input id="apellidos" type="text" class="field__input" placeholder="García" formControlName="apellidos">
+            @if (registerForm.get('apellidos')?.touched && registerForm.get('apellidos')?.errors?.['required']) {
+              <span class="field__error">Obligatorio</span>
+            }
+          </div>
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="emailReg">Correo electrónico</label>
+          <input id="emailReg" type="email" class="field__input" placeholder="tuemail@ejemplo.com"
+            formControlName="email" autocomplete="email">
+          @if (registerForm.get('email')?.touched) {
+            @if (registerForm.get('email')?.errors?.['required']) { <span class="field__error">El correo es obligatorio</span> }
+            @if (registerForm.get('email')?.errors?.['email'] || registerForm.get('email')?.errors?.['customEmail']) {
+              <span class="field__error">Correo no válido</span>
+            }
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="pw1">Contraseña</label>
+          <input id="pw1" type="password" class="field__input" placeholder="Mín. 6 caracteres con número"
+            formControlName="password1" autocomplete="new-password">
+          @if (registerForm.get('password1')?.touched) {
+            @if (registerForm.get('password1')?.errors?.['required']) { <span class="field__error">Obligatoria</span> }
+            @if (registerForm.get('password1')?.errors?.['customPassword']) {
+              <span class="field__error">Debe tener al menos una mayúscula, una minúscula y un número</span>
+            }
+          }
+        </div>
+
+        <div class="field">
+          <label class="field__label" for="pw2">Repetir contraseña</label>
+          <input id="pw2" type="password" class="field__input" placeholder="••••••••"
+            formControlName="password2" autocomplete="new-password">
+          @if (registerForm.get('password2')?.touched) {
+            @if (registerForm.get('password2')?.errors?.['required']) { <span class="field__error">Obligatoria</span> }
+            @if (registerForm.get('password2')?.errors?.['customPassword']) {
+              <span class="field__error">Debe tener al menos una mayúscula, una minúscula y un número</span>
+            }
+          }
+        </div>
+
+        <button type="submit" class="btn-submit" [disabled]="cargando()">
+          @if (cargando()) {
+            <span class="btn-spinner"></span> Creando cuenta...
+          } @else {
+            Crear cuenta gratis
+          }
+        </button>
+
+      </form>
+    }
+
+  </div>
+</div>

@@ -1,0 +1,97 @@
+<div class="chat-layout" [class.chat-layout--chat-open]="showChat()">
+
+  <!-- ─── Panel izquierdo: lista de salas ─── -->
+  <aside class="chat-sidebar">
+    <div class="chat-sidebar__header">
+      <span class="chat-sidebar__title">Mensajes</span>
+      <div class="chat-sidebar__actions">
+        <button class="chat-sidebar__new-btn" (click)="abrirModal('privado')" title="Nuevo chat privado">
+          <i class="bi bi-chat-plus"></i>
+        </button>
+        <button class="chat-sidebar__new-btn" (click)="abrirModal('grupo')" title="Nuevo grupo">
+          <i class="bi bi-people"></i>
+        </button>
+      </div>
+    </div>
+
+    @if (cargando()) {
+      <div class="chat-sidebar__loading"><div class="spinner"></div></div>
+    } @else if (chat.rooms().length === 0) {
+      <p class="chat-sidebar__empty">Sin conversaciones.<br>Crea un chat nuevo.</p>
+    } @else {
+      <ul class="chat-sidebar__list">
+        @for (room of chat.rooms(); track room.id) {
+          <li
+            class="chat-sidebar__item"
+            [class.active]="activeRoom()?.id === room.id"
+            (click)="abrirRoom(room)"
+          >
+            <div class="chat-sidebar__avatar">{{ roomIniciales(room) }}</div>
+            <div class="chat-sidebar__info">
+              <span class="chat-sidebar__name">{{ room.display_name }}</span>
+              <span class="chat-sidebar__last">{{ lastMsg(room) }}</span>
+            </div>
+            @if (room.unread_count > 0) {
+              <span class="chat-sidebar__unread">{{ room.unread_count }}</span>
+            }
+          </li>
+        }
+      </ul>
+    }
+  </aside>
+
+  <!-- ─── Panel derecho: mensajes ─── -->
+  <main class="chat-main">
+    @if (activeRoom()) {
+      <app-chat-room [room]="activeRoom()" (back)="cerrarChat()" />
+    } @else {
+      <div class="chat-main__placeholder">
+        <i class="bi bi-chat-dots" style="font-size:3rem;color:#333"></i>
+        <p>Selecciona una conversación o crea una nueva</p>
+      </div>
+    }
+  </main>
+
+</div>
+
+<!-- ─── Modal: nuevo chat ─── -->
+@if (modalOpen()) {
+  <div class="modal-overlay" (click)="modalOpen.set(false)">
+    <div class="modal" (click)="$event.stopPropagation()">
+      <h3 class="modal__title">
+        @if (modalTipo() === 'privado') { <i class="bi bi-chat"></i> Nuevo chat privado }
+        @else { <i class="bi bi-people"></i> Nuevo grupo }
+      </h3>
+
+      @if (modalTipo() === 'grupo') {
+        <input class="modal__input" type="text" placeholder="Nombre del grupo" [(ngModel)]="grupoName" />
+      }
+
+      <p class="modal__label">Selecciona un amigo{{ modalTipo() === 'grupo' ? 's' : '' }}:</p>
+
+      <ul class="modal__friend-list">
+        @for (a of amigos(); track a.id) {
+          <li
+            class="modal__friend"
+            [class.selected]="selIds.has(a.friend_id)"
+            (click)="toggleAmigo(a.friend_id)"
+          >
+            <div class="modal__avatar">{{ iniciales(a.friend_nombre, a.friend_apellidos) }}</div>
+            <span>{{ a.friend_nombre }} {{ a.friend_apellidos }}</span>
+            @if (selIds.has(a.id)) { <i class="bi bi-check2-circle" style="margin-left:auto;color:#5ca8ff"></i> }
+          </li>
+        }
+        @if (amigos().length === 0) {
+          <p style="color:#666;font-size:0.85rem;padding:0.5rem">No tienes amigos aún.</p>
+        }
+      </ul>
+
+      <div class="modal__footer">
+        <button class="modal__cancel" (click)="modalOpen.set(false)">Cancelar</button>
+        <button class="modal__confirm" (click)="crearChat()" [disabled]="selIds.size === 0">
+          Iniciar chat
+        </button>
+      </div>
+    </div>
+  </div>
+}

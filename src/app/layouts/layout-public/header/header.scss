@@ -1,0 +1,271 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  background: var(--nav-bg);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  height: var(--nav-h, 64px);
+
+  &__inner {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+    height: 64px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+  }
+
+  &__brand {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    text-decoration: none;
+    flex-shrink: 0;
+  }
+  &__brand-icon { font-size: 1.6rem; color: var(--red); line-height: 1; }
+  &__brand-text { font-size: 1.2rem; font-weight: 700; color: var(--text); letter-spacing: -0.3px; }
+  &__brand-badge {
+    font-size: 0.58rem;
+    font-weight: 700;
+    background: var(--red);
+    color: #fff;
+    padding: 2px 6px;
+    border-radius: 6px;
+    letter-spacing: 0.8px;
+    align-self: flex-start;
+    margin-top: 2px;
+  }
+
+  &__tagline {
+    font-size: 0.75rem;
+    color: var(--text3);
+    flex: 1;
+    text-align: center;
+    white-space: nowrap;
+
+    @media (max-width: 900px) { display: none; }
+  }
+
+  &__links {
+    display: flex;
+    list-style: none;
+    gap: 4px;
+    flex-shrink: 0;
+    margin: 0;
+    padding: 0;
+  }
+  &__link {
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--text2);
+    text-decoration: none;
+    position: relative;
+    transition: color 0.2s, background 0.2s;
+
+    &::after {
+      content: '';
+      position: absolute;
+      bottom: 2px;
+      left: 14px;
+      right: 14px;
+      height: 2px;
+      background: var(--red);
+      transform: scaleX(0);
+      transition: transform 0.2s ease;
+      border-radius: 2px;
+    }
+
+    &:hover {
+      color: var(--text);
+      background: var(--surface2);
+      &::after { transform: scaleX(1); }
+    }
+    &.active { color: var(--text); }
+  }
+
+  &__search {
+    flex: 1;
+    max-width: 420px;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  &__search-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--text3);
+    pointer-events: none;
+    display: flex;
+  }
+  &__search-input {
+    width: 100%;
+    background: var(--input-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    color: var(--text);
+    font-size: 0.875rem;
+    padding: 9px 14px 9px 38px;
+    outline: none;
+    transition: border-color 0.2s, background 0.2s;
+    font-family: 'Poppins', sans-serif;
+
+    &::placeholder { color: var(--text3); }
+    &:focus { border-color: var(--red); background: var(--surface2); }
+  }
+
+  &__auth {
+    display: flex;
+    gap: 10px;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  // ── Hamburger ──
+  &__hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 6px;
+    margin-left: auto;
+    flex-shrink: 0;
+
+    span {
+      display: block;
+      width: 22px;
+      height: 2px;
+      background: var(--text2);
+      border-radius: 2px;
+      transition: transform 0.25s, opacity 0.25s, background 0.2s;
+    }
+
+    &.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); background: var(--text); }
+    &.open span:nth-child(2) { opacity: 0; }
+    &.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); background: var(--text); }
+  }
+
+  // ── Mobile dropdown ──
+  &__mobile-menu {
+    display: none;
+    flex-direction: column;
+    padding: 12px 20px 20px;
+    border-top: 1px solid var(--border);
+    background: var(--nav-bg);
+    backdrop-filter: blur(12px);
+
+    &.open { display: flex; }
+  }
+
+  &__mobile-link {
+    padding: 12px 4px;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text2);
+    text-decoration: none;
+    border-bottom: 1px solid var(--border);
+    transition: color 0.2s;
+
+    &:hover { color: var(--text); }
+  }
+
+  &__mobile-auth {
+    display: flex;
+    gap: 10px;
+    margin-top: 16px;
+
+    button { flex: 1; }
+  }
+
+  // ── Responsive ──
+
+  @media (max-width: 480px) {
+    height: auto;
+    &__inner { height: 56px; padding: 0 14px; gap: 0; }
+    &__links  { display: none; }
+    &__search { display: none; }
+    &__auth   { display: none; }
+    &__hamburger { display: flex; }
+    &__brand-text { font-size: 1.05rem; }
+    &__brand-icon { font-size: 1.4rem; }
+  }
+
+  @media (min-width: 481px) and (max-width: 767px) {
+    height: auto;
+    &__inner { height: 60px; padding: 0 16px; gap: 0; }
+    &__links  { display: none; }
+    &__search { display: none; }
+    &__auth   { display: none; }
+    &__hamburger { display: flex; }
+  }
+
+  @media (min-width: 768px) and (max-width: 1024px) {
+    &__search { max-width: 240px; }
+    &__links { gap: 2px; }
+    &__link { padding: 6px 10px; font-size: 0.82rem; }
+    &__inner { gap: 20px; }
+  }
+
+  @media (min-width: 1025px) and (max-width: 1280px) {
+    &__search { max-width: 320px; }
+  }
+
+  @media (min-width: 1281px) {
+    &__inner { max-width: 1440px; padding: 0 32px; }
+    &__search { max-width: 480px; }
+  }
+}
+
+// ── Botones reutilizables ──
+.btn-theme {
+  width: 36px;
+  height: 36px;
+  border: 1px solid var(--border);
+  border-radius: 50%;
+  background: var(--surface2);
+  color: var(--text2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s, transform 0.15s;
+  &:hover { background: var(--surface3); color: var(--text); transform: rotate(15deg); }
+}
+
+.btn-ghost {
+  background: transparent;
+  border: 1px solid var(--border2);
+  border-radius: 8px;
+  color: var(--text2);
+  font-size: 0.875rem;
+  font-weight: 500;
+  padding: 8px 18px;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+
+  &:hover { border-color: var(--text3); color: var(--text); background: var(--surface2); }
+}
+
+.btn-red {
+  background: var(--red);
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-size: 0.875rem;
+  font-weight: 600;
+  padding: 8px 18px;
+  transition: background 0.2s, transform 0.15s;
+  font-family: 'Poppins', sans-serif;
+  cursor: pointer;
+
+  &:hover { background: var(--red-dark); transform: translateY(-1px); }
+  &:active { transform: translateY(0); }
+}
