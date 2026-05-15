@@ -42,3 +42,13 @@ __screenshots__/
 # System files
 .DS_Store
 Thumbs.db
+
+# Python / Django
+__pycache__/
+*.pyc
+*.pyo
+.env
+db.sqlite3
+.venv/
+staticfiles/
+media/
