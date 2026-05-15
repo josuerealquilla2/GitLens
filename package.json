@@ -42,6 +42,7 @@
     "@angular/compiler-cli": "^21.1.0",
     "@angular/localize": "^21.1.0",
     "@ng-bootstrap/ng-bootstrap": "^20.0.0",
+    "bootstrap": "^5.3.8",
     "jsdom": "^27.1.0",
     "typescript": "~5.9.2",
     "vitest": "^4.0.8"

@@ -18,6 +18,19 @@
     gap: 8px;
   }
 
+  &__error-banner {
+    background: rgba(239,68,68,0.08);
+    border: 1px solid rgba(239,68,68,0.25);
+    border-radius: 10px;
+    color: #ef4444;
+    font-size: 0.85rem;
+    padding: 10px 16px;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
   &__header {
     background: var(--surface);
     border: 1px solid var(--border);

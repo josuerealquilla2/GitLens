@@ -19,6 +19,7 @@ export class Profile implements OnInit {
   editando      = signal(false);
   guardando     = signal(false);
   exito         = signal(false);
+  errorMsg      = signal<string | null>(null);
   avatarPreview = signal<string | null>(null);
 
   selectedFile: File | null = null;
@@ -83,6 +84,7 @@ export class Profile implements OnInit {
   guardar() {
     this.guardando.set(true);
     this.exito.set(false);
+    this.errorMsg.set(null);
 
     const onSuccess = (data: any) => {
       this.perfil.set(data);
@@ -93,7 +95,13 @@ export class Profile implements OnInit {
       this.exito.set(true);
       setTimeout(() => this.exito.set(false), 3000);
     };
-    const onError = () => this.guardando.set(false);
+    const onError = (err: any) => {
+      this.guardando.set(false);
+      const data = err?.error;
+      if (data?.website) this.errorMsg.set('Sitio web: ' + data.website[0]);
+      else if (data?.bio)  this.errorMsg.set('Bio: ' + data.bio[0]);
+      else this.errorMsg.set('Error al guardar. Revisa los campos e inténtalo de nuevo.');
+    };
 
     if (this.selectedFile) {
       const fd = new FormData();

@@ -111,9 +111,15 @@
             </div>
             <div class="pf-field">
               <label class="pf-field__label"><i class="bi bi-link-45deg"></i> Sitio web</label>
-              <input class="pf-field__input" type="url" formControlName="website" placeholder="https://tuwebsite.com">
+              <input class="pf-field__input" type="text" formControlName="website" placeholder="https://tuwebsite.com">
             </div>
           </div>
+
+          @if (errorMsg()) {
+            <div class="perfil__error-banner">
+              <i class="bi bi-exclamation-triangle-fill"></i> {{ errorMsg() }}
+            </div>
+          }
 
           <div class="perfil__form-actions">
             <button type="button" class="btn-cambiar-foto" (click)="fileInput.click()">
