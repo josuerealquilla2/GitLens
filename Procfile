@@ -1,1 +1,1 @@
-web: python manage.py migrate --noinput && uvicorn GitLents.asgi:application --host 0.0.0.0 --port $PORT
+web: python manage.py migrate --noinput && gunicorn GitLents.wsgi:application --bind 0.0.0.0:$PORT --workers 2 --timeout 60
